@@ -3,15 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
-<<<<<<< HEAD
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-=======
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
->>>>>>> 4a6dbdb9c650f4fcb8c0fd74ec7e8193426e9e8e
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
