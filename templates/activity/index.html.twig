@@ -25,9 +25,7 @@
                 <td>{{ activity.endDate ? activity.endDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ activity.maxInscriptions }}</td>
                 <td>{{ activity.status.statusLabel}}</td>
-                <td>
-                    {{ activity.organizer.firstname }} {{ activity.organizer.lastname }}
-                </td>
+                <td>{{ activity.organizer.firstname }} {{ activity.organizer.lastname }}</td>
                 <td>
                     <a href="{{ path('app_activity_show', {'id': activity.id}) }}">Afficher</a>
                     <a href="{{ path('app_activity_edit', {'id': activity.id}) }}">Modifier</a>
