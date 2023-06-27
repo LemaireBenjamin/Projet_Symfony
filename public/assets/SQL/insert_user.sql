@@ -1,0 +1,2 @@
+INSERT INTO `user` (`id`, `username`, `roles`, `password`, `email`) VALUES ('1', 'bmeunier', '[\"ROLE_ADMIN\"]', 'azerty123', 'b.meunier@campus-eni.fr');
+INSERT INTO `user` (`id`, `username`, `roles`, `password`, `email`) VALUES ('4', 'sdaniel', '[\"ROLE_USER\"]', 'user1', 's.daniel@campus-eni.fr');
