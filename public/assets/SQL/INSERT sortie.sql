@@ -48,6 +48,12 @@ INSERT INTO `activity` (`id`, `name`, `start_date`, `duration`, `end_date`, `max
 VALUES (1, 'Cinéma', '2023-06-30 11:03:59', 180, '2023-06-30 11:03:59', 15, 'Film : Mais qui à tué Pamela Rose', 1,
         NULL, 1, 2, 1, 1);
 
+INSERT INTO `participant_activity` (`participant_id`, `activity_id`)
+VALUES (1, 1),
+       (2, 1),
+       (4, 1),
+       (9, 1);
+
 
 
 
