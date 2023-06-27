@@ -19,7 +19,7 @@ class Status
     private ?int $status_no = null;
 
     #[ORM\Column]
-    private ?int $status_label = null;
+    private ?string $status_label = null;
 
     #[ORM\OneToMany(mappedBy: 'status', targetEntity: Activity::class)]
     private Collection $activities;
