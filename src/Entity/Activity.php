@@ -3,6 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\ActivityRepository;
+<<<<<<< HEAD
+=======
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+>>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -38,6 +43,29 @@ class Activity
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $pictureUrl = null;
 
+<<<<<<< HEAD
+=======
+    #[ORM\ManyToOne(inversedBy: 'activities')]
+    private ?Participant $organizer = null;
+
+    #[ORM\ManyToMany(targetEntity: Participant::class, mappedBy: 'activities')]
+    private Collection $participants;
+
+    #[ORM\ManyToOne(inversedBy: 'activities')]
+    private ?Site $site = null;
+
+    #[ORM\ManyToOne(inversedBy: 'activities')]
+    private ?Place $place = null;
+
+    #[ORM\ManyToOne(inversedBy: 'activities')]
+    private ?Status $status = null;
+
+    public function __construct()
+    {
+        $this->participants = new ArrayCollection();
+    }
+
+>>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
     public function getId(): ?int
     {
         return $this->id;
@@ -138,4 +166,82 @@ class Activity
 
         return $this;
     }
+<<<<<<< HEAD
+=======
+
+    public function getOrganizer(): ?Participant
+    {
+        return $this->organizer;
+    }
+
+    public function setOrganizer(?Participant $organizer): static
+    {
+        $this->organizer = $organizer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participant>
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(Participant $participant): static
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants->add($participant);
+            $participant->addActivity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participant $participant): static
+    {
+        if ($this->participants->removeElement($participant)) {
+            $participant->removeActivity($this);
+        }
+
+        return $this;
+    }
+
+    public function getSite(): ?Site
+    {
+        return $this->site;
+    }
+
+    public function setSite(?Site $site): static
+    {
+        $this->site = $site;
+
+        return $this;
+    }
+
+    public function getPlace(): ?Place
+    {
+        return $this->place;
+    }
+
+    public function setPlace(?Place $place): static
+    {
+        $this->place = $place;
+
+        return $this;
+    }
+
+    public function getStatus(): ?Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?Status $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+>>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
 }

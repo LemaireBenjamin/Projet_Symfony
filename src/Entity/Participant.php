@@ -3,6 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
+<<<<<<< HEAD
+=======
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+>>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
@@ -37,6 +42,17 @@ class Participant
     #[ORM\Column]
     private ?bool $active = null;
 
+<<<<<<< HEAD
+=======
+    #[ORM\ManyToMany(targetEntity: Activity::class, inversedBy: 'participants')]
+    private Collection $activities;
+
+    public function __construct()
+    {
+        $this->activities = new ArrayCollection();
+    }
+
+>>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
     public function getId(): ?int
     {
         return $this->id;
@@ -137,4 +153,49 @@ class Participant
 
         return $this;
     }
+<<<<<<< HEAD
+=======
+
+    public function getSite(): ?Site
+    {
+        return $this->site;
+    }
+
+    public function setSite(?Site $site): static
+    {
+        $this->site = $site;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Activity>
+     */
+    public function getActivities(): Collection
+    {
+        return $this->activities;
+    }
+
+    public function addActivity(Activity $activity): static
+    {
+        if (!$this->activities->contains($activity)) {
+            $this->activities->add($activity);
+            $activity->setOrganizer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): static
+    {
+        if ($this->activities->removeElement($activity)) {
+            // set the owning side to null (unless already changed)
+            if ($activity->getOrganizer() === $this) {
+                $activity->setOrganizer(null);
+            }
+        }
+
+        return $this;
+    }
+>>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
 }
