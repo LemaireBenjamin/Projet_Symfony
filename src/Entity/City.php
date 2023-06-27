@@ -104,4 +104,8 @@ class City
 
         return $this;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4a6dbdb9c650f4fcb8c0fd74ec7e8193426e9e8e
