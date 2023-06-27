@@ -1,49 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Activity index{% endblock %}
+{% block title %}Liste des sorties{% endblock %}
 
 {% block body %}
-    <h1>Activity index</h1>
+    <h1>Liste des sorties</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>StartDate</th>
-                <th>Duration</th>
-                <th>EndDate</th>
-                <th>MaxInscriptions</th>
-                <th>Description</th>
-                <th>ActivityStatus</th>
-                <th>PictureUrl</th>
-                <th>actions</th>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture</th>
+                <th>Inscrits / Places</th>>
+                <th>Etat</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for activity in activities %}
             <tr>
-                <td>{{ activity.id }}</td>
                 <td>{{ activity.name }}</td>
                 <td>{{ activity.startDate ? activity.startDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ activity.duration }}</td>
                 <td>{{ activity.endDate ? activity.endDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ activity.maxInscriptions }}</td>
-                <td>{{ activity.description }}</td>
-                <td>{{ activity.activityStatus }}</td>
-                <td>{{ activity.pictureUrl }}</td>
+                <td>{{ activity.status.statusLabel}}</td>
+                <td>{{ activity.organizer.firstname }} {{ activity.organizer.lastname }}</td>
                 <td>
-                    <a href="{{ path('app_activity_show', {'id': activity.id}) }}">show</a>
-                    <a href="{{ path('app_activity_edit', {'id': activity.id}) }}">edit</a>
+                    <a href="{{ path('app_activity_show', {'id': activity.id}) }}">Afficher</a>
+                    <a href="{{ path('app_activity_edit', {'id': activity.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="10">no records found</td>
+                <td colspan="10">Pas d'activité trouvée</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_activity_new') }}">Create new</a>
+    <a href="{{ path('app_activity_new') }}">Créer une sortie</a>
 {% endblock %}

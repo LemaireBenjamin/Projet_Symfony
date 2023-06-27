@@ -37,16 +37,18 @@ VALUES (1, 'MEUNIER', 'Bertrand', '0664826290', 1, 1),
        (15, 'CAROFF', 'Gautier', '0645953215', 0, 1),
        (16, 'PRIGENT', 'Quentin', '0789653254', 1, 1);
 
-INSERT INTO `activity` (`id`, `name`, `start_date`, `duration`, `end_date`, `max_inscriptions`, `description`,
-                        `activity_status`, `picture_url`, `organizer_id`, `site_id`, `place_id`, `status_id`)
-VALUES (1, 'Cinéma', '2023-06-30 11:03:59', 180, '2023-06-30 11:03:59', 15, 'Film : Mais qui à tué Pamela Rose', 1,
-        NULL, 1, 2, 1, 1);
-
 INSERT INTO `place` (`id`, `place_id`, `place_name`, `place_street`, `latitude`, `longitude`, `city_id`)
 VALUES (1, 1, 'Cinéville', 'Rue Marie de Kerstrat', NULL, NULL, 2),
        (2, 2, 'Aqua Plouf', '159 boulevard de Creac\'h Gwen', NULL, NULL, 2),
        (3, 3, 'Quai West', '30 quai Fernand Crouan', NULL, NULL, 1),
        (4, 4, 'V&B', '52 avenue De Keradennec', NULL, NULL, 2);
+
+INSERT INTO `activity` (`id`, `name`, `start_date`, `duration`, `end_date`, `max_inscriptions`, `description`,
+                        `activity_status`, `picture_url`, `organizer_id`, `site_id`, `place_id`, `status_id`)
+VALUES (1, 'Cinéma', '2023-06-30 11:03:59', 180, '2023-06-30 11:03:59', 15, 'Film : Mais qui à tué Pamela Rose', 1,
+        NULL, 1, 2, 1, 1);
+
+
 
 
 

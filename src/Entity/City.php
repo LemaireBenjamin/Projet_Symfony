@@ -18,10 +18,10 @@ class City
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $city_no = null;
+    private ?int $cityNo = null;
 
     #[ORM\Column(length: 30)]
-    private ?string $city_name = null;
+    private ?string $cityName = null;
 
     #[ORM\Column(length: 10)]
     private ?string $zipcode = null;
@@ -41,24 +41,24 @@ class City
 
     public function getCityNo(): ?int
     {
-        return $this->city_no;
+        return $this->cityNo;
     }
 
-    public function setCityNo(int $city_no): static
+    public function setCityNo(int $cityNo): static
     {
-        $this->city_no = $city_no;
+        $this->cityNo = $cityNo;
 
         return $this;
     }
 
     public function getCityName(): ?string
     {
-        return $this->city_name;
+        return $this->cityName;
     }
 
-    public function setCityName(string $city_name): static
+    public function setCityName(string $cityName): static
     {
-        $this->city_name = $city_name;
+        $this->cityName = $cityName;
 
         return $this;
     }
