@@ -92,6 +92,7 @@ class Participant
         return $this->organiser;
     }
 
+
     public function setOrganiser(bool $organiser): static
     {
         $this->organiser = $organiser;

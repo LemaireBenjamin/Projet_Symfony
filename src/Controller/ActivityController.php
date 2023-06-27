@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Activity;
+use App\Entity\Status;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
+use App\Repository\StatusRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,8 +18,10 @@ class ActivityController extends AbstractController
     #[Route('/', name: 'app_activity_index', methods: ['GET'])]
     public function index(ActivityRepository $activityRepository): Response
     {
+
         return $this->render('activity/index.html.twig', [
-            'activities' => $activityRepository->findAll(),
+            'activities' =>  $activityRepository->findAll()
+//            'status' => $statusRepository->findAll(),
         ]);
     }
 
@@ -41,7 +45,7 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_activity_show', methods: ['GET'])]
-    public function show(Activity $activity): Response
+    public function show(Activity $activity, Status $status): Response
     {
         return $this->render('activity/show.html.twig', [
             'activity' => $activity,

@@ -18,13 +18,13 @@ class Place
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $place_id = null;
+    private ?int $placeId = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $place_name = null;
+    private ?string $placeName = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    private ?string $place_street = null;
+    private ?string $placeStreet = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $latitude = null;
@@ -50,36 +50,36 @@ class Place
 
     public function getPlaceId(): ?int
     {
-        return $this->place_id;
+        return $this->placeId;
     }
 
-    public function setPlaceId(int $place_id): static
+    public function setPlaceId(int $placeId): static
     {
-        $this->place_id = $place_id;
+        $this->placeId = $placeId;
 
         return $this;
     }
 
     public function getPlaceName(): ?string
     {
-        return $this->place_name;
+        return $this->placeName;
     }
 
-    public function setPlaceName(string $place_name): static
+    public function setPlaceName(string $placeName): static
     {
-        $this->place_name = $place_name;
+        $this->placeName = $placeName;
 
         return $this;
     }
 
     public function getPlaceStreet(): ?string
     {
-        return $this->place_street;
+        return $this->placeStreet;
     }
 
-    public function setPlaceStreet(?string $place_street): static
+    public function setPlaceStreet(?string $placeStreet): static
     {
-        $this->place_street = $place_street;
+        $this->placeStreet = $placeStreet;
 
         return $this;
     }
