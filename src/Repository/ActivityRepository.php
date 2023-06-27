@@ -39,6 +39,18 @@ class ActivityRepository extends ServiceEntityRepository
         }
     }
 
+//    public function findOneByOrganizerId(int $organiserId): ?array
+//    {
+//        $queryBuilder = $this->createQueryBuilder('a')
+//            ->select('p.firstname', 'p.lastname')
+//            ->leftJoin('a.organiser', 'p')
+//            ->andWhere('a.organiser = :organiserId')
+//            ->setParameter('organiserId', $organiserId)
+//            ->getQuery();
+//
+//        return $queryBuilder->getOneOrNullResult();
+//    }
+
 //    /**
 //     * @return Activity[] Returns an array of Activity objects
 //     */

@@ -54,11 +54,11 @@ class ParticipantRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Participant
+//    public function findOneByIsOrganiser(int $value): ?Participant
 //    {
 //        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
+//            ->andWhere('p.isOrganiser = :value')
+//            ->setParameter('value', $value)
 //            ->getQuery()
 //            ->getOneOrNullResult()
 //        ;

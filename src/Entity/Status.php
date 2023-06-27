@@ -18,10 +18,10 @@ class Status
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $status_no = null;
+    private ?int $statusNo = null;
 
     #[ORM\Column]
-    private ?string $status_label = null;
+    private ?string $statusLabel = null;
 
     #[ORM\OneToMany(mappedBy: 'status', targetEntity: Activity::class)]
     private Collection $activities;
@@ -39,24 +39,24 @@ class Status
 
     public function getStatusNo(): ?int
     {
-        return $this->status_no;
+        return $this->statusNo;
     }
 
-    public function setStatusNo(int $status_no): static
+    public function setStatusNo(int $statusNo): static
     {
-        $this->status_no = $status_no;
+        $this->statusNo = $statusNo;
 
         return $this;
     }
 
-    public function getStatusLabel(): ?int
+    public function getStatusLabel(): ?string
     {
-        return $this->status_label;
+        return $this->statusLabel;
     }
 
-    public function setStatusLabel(int $status_label): static
+    public function setStatusLabel(string $statusLabel): static
     {
-        $this->status_label = $status_label;
+        $this->statusLabel = $statusLabel;
 
         return $this;
     }

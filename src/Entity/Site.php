@@ -18,10 +18,10 @@ class Site
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $site_no = null;
+    private ?int $siteNo = null;
 
     #[ORM\Column(length: 30)]
-    private ?string $site_name = null;
+    private ?string $siteName = null;
 
 
     #[ORM\OneToMany(mappedBy: 'site', targetEntity: Participant::class)]
@@ -43,24 +43,24 @@ class Site
 
     public function getSiteNo(): ?int
     {
-        return $this->site_no;
+        return $this->siteNo;
     }
 
-    public function setSiteNo(int $site_no): static
+    public function setSiteNo(int $siteNo): static
     {
-        $this->site_no = $site_no;
+        $this->siteNo = $siteNo;
 
         return $this;
     }
 
     public function getSiteName(): ?string
     {
-        return $this->site_name;
+        return $this->siteName;
     }
 
-    public function setSiteName(string $site_name): static
+    public function setSiteName(string $siteName): static
     {
-        $this->site_name = $site_name;
+        $this->siteName = $siteName;
 
         return $this;
     }
