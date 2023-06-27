@@ -3,10 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\CityRepository;
+<<<<<<< HEAD
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+=======
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+>>>>>>> e490f59b2f0dd452fd8b194253c647a2fc133605
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CityRepository::class)]
@@ -104,5 +109,8 @@ class City
 
         return $this;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> e490f59b2f0dd452fd8b194253c647a2fc133605
 }

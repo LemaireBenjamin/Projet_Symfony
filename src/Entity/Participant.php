@@ -3,10 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
+<<<<<<< HEAD
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+=======
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+>>>>>>> e490f59b2f0dd452fd8b194253c647a2fc133605
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
@@ -18,9 +23,6 @@ class Participant
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $username = null;
-
-    #[ORM\Column(length: 50)]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 50)]
@@ -28,12 +30,6 @@ class Participant
 
     #[ORM\Column(length: 15, nullable: true)]
     private ?string $phone = null;
-
-    #[ORM\Column(length: 25)]
-    private ?string $mail = null;
-
-    #[ORM\Column(length: 30)]
-    private ?string $password = null;
 
     #[ORM\Column]
     private ?bool $organiser = null;
@@ -54,17 +50,6 @@ class Participant
         return $this->id;
     }
 
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(string $username): static
-    {
-        $this->username = $username;
-
-        return $this;
-    }
 
     public function getLastname(): ?string
     {
@@ -102,29 +87,6 @@ class Participant
         return $this;
     }
 
-    public function getMail(): ?string
-    {
-        return $this->mail;
-    }
-
-    public function setMail(string $mail): static
-    {
-        $this->mail = $mail;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-
-        return $this;
-    }
 
     public function isOrganiser(): ?bool
     {
@@ -149,7 +111,10 @@ class Participant
 
         return $this;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> e490f59b2f0dd452fd8b194253c647a2fc133605
 
     public function getSite(): ?Site
     {
@@ -192,5 +157,8 @@ class Participant
 
         return $this;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> e490f59b2f0dd452fd8b194253c647a2fc133605
 }
