@@ -104,4 +104,6 @@ class City
 
         return $this;
     }
+
 }
+

@@ -150,4 +150,6 @@ class Place
 
         return $this;
     }
+
 }
+

@@ -23,7 +23,6 @@ class Site
     #[ORM\Column(length: 30)]
     private ?string $site_name = null;
 
-
     #[ORM\OneToMany(mappedBy: 'site', targetEntity: Participant::class)]
     private Collection $participants;
 
@@ -64,7 +63,6 @@ class Site
 
         return $this;
     }
-
 
     /**
      * @return Collection<int, Participant>

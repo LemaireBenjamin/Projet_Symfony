@@ -6,6 +6,7 @@ use App\Repository\ActivityRepository;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,7 +41,6 @@ class Activity
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $pictureUrl = null;
-
 
     #[ORM\ManyToOne(inversedBy: 'activities')]
     private ?Participant $organizer = null;
@@ -237,5 +237,4 @@ class Activity
 
         return $this;
     }
-
 }
