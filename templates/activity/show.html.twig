@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activity{% endblock %}
+
+{% block body %}
+    <h1>Activity</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ activity.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ activity.name }}</td>
+            </tr>
+            <tr>
+                <th>StartDate</th>
+                <td>{{ activity.startDate ? activity.startDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Duration</th>
+                <td>{{ activity.duration }}</td>
+            </tr>
+            <tr>
+                <th>EndDate</th>
+                <td>{{ activity.endDate ? activity.endDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>MaxInscriptions</th>
+                <td>{{ activity.maxInscriptions }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ activity.description }}</td>
+            </tr>
+            <tr>
+                <th>ActivityStatus</th>
+                <td>{{ activity.activityStatus }}</td>
+            </tr>
+            <tr>
+                <th>PictureUrl</th>
+                <td>{{ activity.pictureUrl }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_activity_index') }}">back to list</a>
+
+    <a href="{{ path('app_activity_edit', {'id': activity.id}) }}">edit</a>
+
+    {{ include('activity/_delete_form.html.twig') }}
+{% endblock %}
