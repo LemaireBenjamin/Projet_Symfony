@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\SiteRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SiteRepository::class)]
@@ -20,6 +22,7 @@ class Site
 
     #[ORM\Column(length: 30)]
     private ?string $site_name = null;
+
 
     #[ORM\OneToMany(mappedBy: 'site', targetEntity: Participant::class)]
     private Collection $participants;
@@ -61,6 +64,7 @@ class Site
 
         return $this;
     }
+
 
     /**
      * @return Collection<int, Participant>
@@ -121,4 +125,5 @@ class Site
 
         return $this;
     }
+
 }

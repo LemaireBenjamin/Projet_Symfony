@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\PlaceRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlaceRepository::class)]
@@ -105,6 +107,7 @@ class Place
 
         return $this;
     }
+
 
     /**
      * @return Collection<int, Activity>

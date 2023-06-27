@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\StatusRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StatusRepository::class)]
@@ -19,7 +21,7 @@ class Status
     private ?int $status_no = null;
 
     #[ORM\Column]
-    private ?int $status_label = null;
+    private ?string $status_label = null;
 
     #[ORM\OneToMany(mappedBy: 'status', targetEntity: Activity::class)]
     private Collection $activities;
@@ -28,6 +30,7 @@ class Status
     {
         $this->activities = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
