@@ -3,11 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\CityRepository;
-<<<<<<< HEAD
-=======
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CityRepository::class)]
@@ -27,8 +26,6 @@ class City
     #[ORM\Column(length: 10)]
     private ?string $zipcode = null;
 
-<<<<<<< HEAD
-=======
     #[ORM\OneToMany(mappedBy: 'city', targetEntity: Place::class)]
     private Collection $places;
 
@@ -37,7 +34,6 @@ class City
         $this->places = new ArrayCollection();
     }
 
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
     public function getId(): ?int
     {
         return $this->id;
@@ -78,8 +74,6 @@ class City
 
         return $this;
     }
-<<<<<<< HEAD
-=======
 
     /**
      * @return Collection<int, Place>
@@ -110,5 +104,5 @@ class City
 
         return $this;
     }
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
+
 }

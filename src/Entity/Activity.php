@@ -3,11 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ActivityRepository;
-<<<<<<< HEAD
-=======
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
+
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -43,8 +42,7 @@ class Activity
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $pictureUrl = null;
 
-<<<<<<< HEAD
-=======
+
     #[ORM\ManyToOne(inversedBy: 'activities')]
     private ?Participant $organizer = null;
 
@@ -65,7 +63,6 @@ class Activity
         $this->participants = new ArrayCollection();
     }
 
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
     public function getId(): ?int
     {
         return $this->id;
@@ -166,8 +163,6 @@ class Activity
 
         return $this;
     }
-<<<<<<< HEAD
-=======
 
     public function getOrganizer(): ?Participant
     {
@@ -243,5 +238,5 @@ class Activity
 
         return $this;
     }
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
+
 }

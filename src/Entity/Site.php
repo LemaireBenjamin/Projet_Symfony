@@ -3,11 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\SiteRepository;
-<<<<<<< HEAD
-=======
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SiteRepository::class)]
@@ -24,8 +23,7 @@ class Site
     #[ORM\Column(length: 30)]
     private ?string $site_name = null;
 
-<<<<<<< HEAD
-=======
+
     #[ORM\OneToMany(mappedBy: 'site', targetEntity: Participant::class)]
     private Collection $participants;
 
@@ -38,7 +36,6 @@ class Site
         $this->activities = new ArrayCollection();
     }
 
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
     public function getId(): ?int
     {
         return $this->id;
@@ -67,8 +64,7 @@ class Site
 
         return $this;
     }
-<<<<<<< HEAD
-=======
+
 
     /**
      * @return Collection<int, Participant>
@@ -129,5 +125,5 @@ class Site
 
         return $this;
     }
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
+
 }

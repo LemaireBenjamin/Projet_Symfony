@@ -3,11 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\StatusRepository;
-<<<<<<< HEAD
-=======
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StatusRepository::class)]
@@ -24,8 +23,6 @@ class Status
     #[ORM\Column]
     private ?int $status_label = null;
 
-<<<<<<< HEAD
-=======
     #[ORM\OneToMany(mappedBy: 'status', targetEntity: Activity::class)]
     private Collection $activities;
 
@@ -34,7 +31,7 @@ class Status
         $this->activities = new ArrayCollection();
     }
 
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,8 +60,7 @@ class Status
 
         return $this;
     }
-<<<<<<< HEAD
-=======
+
 
     /**
      * @return Collection<int, Activity>
@@ -95,5 +91,5 @@ class Status
 
         return $this;
     }
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
+
 }

@@ -3,11 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
-<<<<<<< HEAD
-=======
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
@@ -42,8 +41,6 @@ class Participant
     #[ORM\Column]
     private ?bool $active = null;
 
-<<<<<<< HEAD
-=======
     #[ORM\ManyToMany(targetEntity: Activity::class, inversedBy: 'participants')]
     private Collection $activities;
 
@@ -52,7 +49,6 @@ class Participant
         $this->activities = new ArrayCollection();
     }
 
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
     public function getId(): ?int
     {
         return $this->id;
@@ -153,8 +149,7 @@ class Participant
 
         return $this;
     }
-<<<<<<< HEAD
-=======
+
 
     public function getSite(): ?Site
     {
@@ -197,5 +192,5 @@ class Participant
 
         return $this;
     }
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
+
 }

@@ -3,11 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\PlaceRepository;
-<<<<<<< HEAD
-=======
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlaceRepository::class)]
@@ -33,8 +32,6 @@ class Place
     #[ORM\Column(nullable: true)]
     private ?float $longitude = null;
 
-<<<<<<< HEAD
-=======
     #[ORM\OneToMany(mappedBy: 'place', targetEntity: Activity::class)]
     private Collection $activities;
 
@@ -46,7 +43,6 @@ class Place
         $this->activities = new ArrayCollection();
     }
 
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
     public function getId(): ?int
     {
         return $this->id;
@@ -111,8 +107,7 @@ class Place
 
         return $this;
     }
-<<<<<<< HEAD
-=======
+
 
     /**
      * @return Collection<int, Activity>
@@ -155,5 +150,5 @@ class Place
 
         return $this;
     }
->>>>>>> 5b8d79f142dbba5058a1c2b42ebdc47c14c8e179
+
 }
