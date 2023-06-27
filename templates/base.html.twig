@@ -24,8 +24,13 @@
             {{ include('/common/header.html.twig') }}
         </header>
 
-        <main class="container text-center">
-            {% block body %} {% endblock %}
+
+        <main class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    {% block body %} {% endblock %}
+                </div>
+            </div>
         </main>
 
         <footer>
@@ -34,6 +39,4 @@
 
     </body>
 
-
 </html>
-
