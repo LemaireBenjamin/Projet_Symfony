@@ -4,6 +4,9 @@ namespace App\Form;
 
 use App\Entity\Participant;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,14 +15,16 @@ class ParticipantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username')
-            ->add('lastname')
-            ->add('firstname')
-            ->add('phone')
-            ->add('mail')
-            ->add('password')
-            ->add('organiser')
-            ->add('active')
+            ->add('lastname', TextType::class,
+            ['label'=>'Nom'])
+            ->add('firstname', TextType::class,
+            ['label'=>'Prénom'])
+            ->add('phone', TextType::class,
+            ['label'=>'Télephone'])
+            ->add('organiser', CheckboxType::class,
+            ['label'=>'Organisateur?'])
+            ->add('active',  CheckboxType::class,
+                ['label'=>'Active'])
         ;
     }
 
