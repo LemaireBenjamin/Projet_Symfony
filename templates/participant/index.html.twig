@@ -13,8 +13,6 @@
                 <th>Lastname</th>
                 <th>Firstname</th>
                 <th>Phone</th>
-                <th>Mail</th>
-                <th>Password</th>
                 <th>Organiser</th>
                 <th>Active</th>
                 <th>actions</th>
@@ -24,12 +22,9 @@
         {% for participant in participants %}
             <tr>
                 <td>{{ participant.id }}</td>
-                <td>{{ participant.username }}</td>
                 <td>{{ participant.lastname }}</td>
                 <td>{{ participant.firstname }}</td>
                 <td>{{ participant.phone }}</td>
-                <td>{{ participant.mail }}</td>
-                <td>{{ participant.password }}</td>
                 <td>{{ participant.organiser ? 'Yes' : 'No' }}</td>
                 <td>{{ participant.active ? 'Yes' : 'No' }}</td>
                 <td>
