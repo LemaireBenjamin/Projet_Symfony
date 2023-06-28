@@ -75,6 +75,7 @@ class ParticipantController extends AbstractController
 //        $site = $participant->getSite();
 dump($user);
 
+
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
 
@@ -113,4 +114,14 @@ dump($user);
 
         return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    //view all participant
+//    #[Route('/viewAllParticipant', methods: ['GET', 'POST'])]
+//    public function viewAll(ParticipantRepository $participantRepository){
+//        $participant= $participantRepository->findAll();
+//        return $this->render('participant/participantAll.html.twig',
+//        ['participant'=>$participant]);
+
+//    }
+
 }
