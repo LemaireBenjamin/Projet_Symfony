@@ -1,0 +1,64 @@
+body {
+
+
+}
+
+.bg-gradient {
+    background-image: var(--bs-gradient);.
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+}
+
+.div_button {
+    display: flex;
+    justify-content: center;
+}
+
+.link_button {
+    color: ghostwhite;
+    text-decoration: none;
+}
+
+.titre {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 2em;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+}
+
+.filters {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 2em;
+}
+
+.filters_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+}
+
+.calendar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.table {
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}

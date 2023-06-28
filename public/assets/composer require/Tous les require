@@ -1,0 +1,10 @@
+//Permet le reset du mot de passe
+composer require symfonycasts/reset-password-bundle
+
+//Permet de gérer le format des dates.
+composer require twig/intl-extra
+
+composer require --dev orm-fixtures
+
+composer require --dev fakerphp/faker
+
