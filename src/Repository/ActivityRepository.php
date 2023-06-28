@@ -39,6 +39,59 @@ class ActivityRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByFilters($site, $name, $startDate, $endDate, $isOrganizer, $isParticipant, $isNotParticipant, $isPast, $currentUser)
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+
+        if ($site) {
+            $queryBuilder->andWhere('a.site = :site')
+                ->setParameter('site', $site);
+        }
+
+        if ($name) {
+            $queryBuilder->andWhere('a.name LIKE :name')
+                ->setParameter('name', '%' . $name . '%');
+        }
+
+        if ($startDate) {
+            $queryBuilder->andWhere('a.startDate >= :startDate')
+                ->setParameter('startDate', $startDate);
+        }
+
+        if ($endDate) {
+            $queryBuilder->andWhere('a.startDate <= :endDate')
+                ->setParameter('endDate', $endDate);
+        }
+
+        if ($isOrganizer) {
+            $queryBuilder->andWhere('a.organizer = :organizer')
+                ->setParameter('organizer', $currentUser);
+        }
+
+        if ($isParticipant) {
+            $queryBuilder->innerJoin('a.participants', 'p')
+                ->andWhere('p.id = :participantId')
+                ->setParameter('participantId', $currentUser->getId());
+        }
+
+        if ($isNotParticipant) {
+            $queryBuilder->leftJoin('a.participants', 'p')
+                ->andWhere($queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->isNull('p'),
+                    $queryBuilder->expr()->neq('p.id', ':participantId')
+                ))
+                ->setParameter('participantId', $currentUser->getId());
+        }
+
+        if ($isPast) {
+            $queryBuilder->andWhere('a.startDate < :currentDate')
+                ->setParameter('currentDate', new \DateTime());
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+
 //    public function findOneByOrganizerId(int $organiserId): ?array
 //    {
 //        $queryBuilder = $this->createQueryBuilder('a')

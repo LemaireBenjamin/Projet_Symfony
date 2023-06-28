@@ -39,6 +39,9 @@ class Participant
     #[ORM\OneToOne(mappedBy: 'participant', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
+    #[ORM\ManyToOne(inversedBy: 'participants')]
+    private ?Site $site = null;
+
     public function __construct()
     {
         $this->activities = new ArrayCollection();

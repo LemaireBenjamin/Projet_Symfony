@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche d'activités{% endblock %}
+
+{% block body %}
+    <h1>Recherche d'activités</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nom de la sortie</th>
+            <th>Date de la sortie</th>
+            <th>Clôture</th>
+            <th>Inscrits / Places</th>
+            <th>Etat</th>
+            <th>Organisateur</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for activity in activities %}
+            <tr>
+                <td>{{ activity.name }}</td>
+                <td>{{ activity.startDate ? activity.startDate|date('d/m/Y H:i') : '' }}</td>
+                <td>{{ activity.endDate ? activity.endDate|date('d/m/Y') : '' }}</td>
+                <td>{{ activity.participants|length }} / {{ activity.maxInscriptions }}</td>
+                <td>{{ activity.status.statusLabel}}</td>
+                <td>{{ activity.organizer.firstname }} {{ activity.organizer.lastname }}</td>
+                <td>
+                    <a href="{{ path('app_activity_show', {'id': activity.id}) }}">Afficher</a>
+                    <a href="{{ path('app_activity_edit', {'id': activity.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">Pas d'activité trouvée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
