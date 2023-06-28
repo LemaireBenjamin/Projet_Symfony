@@ -72,13 +72,8 @@ class ParticipantController extends AbstractController
 
         $findUser = $userRepository->findByParticipantId($id);
         $user = $findUser[0];
-        $site = $participant->getSite()->getId();
-//        $site = $siteRepository->find($participant->getSite()->getId());
-        dump($site);
-        dump($user);
-
-        dd('kill me');
-//        GIGA CHEH MON REUF ❤
+//        $site = $participant->getSite();
+dump($user);
 
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
@@ -88,16 +83,18 @@ class ParticipantController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $participantRepository->save($participant, true);
 
-//            $username = $request->request->get("email");
-//            $email = $request->request->get("email");
-//            $password = $request->request->get("password");
-//            dd($password);
+            $username = $request->request->get("username");
+            $email = $request->request->get("email");
+            $password = $request->request->get("password");
+            dump($username);
+            dump($email);
+            dump($password);
 
-//            $user->setUsername($username);
-//            $user->setEmail($email);
-
-//            $userRepository->save($user,true);
-
+            $user->setUsername($username);
+            $user->setEmail($email);
+//            dd($user);
+            $userRepository->save($user,true);
+//            dd("kill");
             return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
         }
 
