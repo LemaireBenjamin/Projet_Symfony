@@ -8,29 +8,30 @@
             <h1>Liste des sorties</h1>
         </div>
         <div class="right">
-            <h6>Date du jour :</h6>
-            <h6>Participant :</h6>
+            <h6>Nous sommes le {{ "now"|format_datetime('full', 'none', locale='fr') }}</h6>
+            <h6>Participant : {{ app.user.username }}</h6>
         </div>
     </div>
     <div class="filters">
-        <div class="left">
-            <h6>Filtrer les sorties</h6>
-            {{ form_start(form) }}
-            {{ form_row(form.site) }}
-            {{ form_row(form.name) }}
-            {{ form_row(form.startDate) }}
-            {{ form_row(form.endDate) }}
-            {{ form_row(form.isOrganizer) }}
-            {{ form_row(form.isParticipant) }}
-            {{ form_row(form.isNotParticipant) }}
-            {{ form_row(form.isPast) }}
-            {{ form_row(form.submit) }}
-            {{ form_end(form) }}
-        </div>
-        <div class="right">
-
-
-
+        <h6>Filtrer les sorties</h6>
+        <div class="filters_container">
+            <div class="col-3 mx-5">
+                {{ form_start(form) }}
+                {{ form_row(form.site) }}
+                {{ form_row(form.name) }}
+                <div class="calendar">
+                    {{ form_row(form.startDate) }}
+                    {{ form_row(form.endDate) }}
+                </div>
+            </div>
+            <div class="col-3 mt-4 mx-5">
+                {{ form_row(form.isOrganizer) }}
+                {{ form_row(form.isParticipant) }}
+                {{ form_row(form.isNotParticipant) }}
+                {{ form_row(form.isPast) }}
+                {{ form_row(form.submit) }}
+                {{ form_end(form) }}
+            </div>
         </div>
     </div>
     <table class="table">
@@ -49,8 +50,8 @@
         {% for activity in activities %}
             <tr>
                 <td>{{ activity.name }}</td>
-                <td>{{ activity.startDate ? activity.startDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ activity.endDate ? activity.endDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ activity.startDate ? activity.startDate|format_datetime('short', 'short', locale='fr') }}</td>
+                <td>{{ activity.endDate ? activity.endDate|format_datetime('short', 'none', locale='fr')}}</td>
                 <td>{{ activity.participants|length }} / {{ activity.maxInscriptions }}</td>
                 <td>{{ activity.status.statusLabel}}</td>
                 <td>{{ activity.organizer.firstname }} {{ activity.organizer.lastname }}</td>
@@ -66,6 +67,9 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="div_button">
+        <button type="button" class="btn btn-primary"><a class="link_button" href="{{ path('app_activity_new') }}">Créer une sortie</a></button>
+    </div>
 
-    <a href="{{ path('app_activity_new') }}">Créer une sortie</a>
+
 {% endblock %}

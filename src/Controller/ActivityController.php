@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\SecurityBundle\Security;
 
 #[Route('/activity')]
 class ActivityController extends AbstractController
@@ -24,11 +25,11 @@ class ActivityController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/', name: 'app_activity_index', methods: ['GET'])]
-    public function index(Request $request,ActivityRepository $activityRepository): Response
+    #[Route('/', name: 'app_activity_index', methods: ['GET', 'POST'])]
+    public function index(Request $request,ActivityRepository $activityRepository, Security $security): Response
     {
+        $currentUser = $security->getUser();
         $sites = $this->entityManager->getRepository(Site::class)->findAll();
-
         $form = $this->createForm(ActivityFilterType::class, null, [
             'sites' => $sites,
         ]);
@@ -37,13 +38,21 @@ class ActivityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-
             // Effectuer la recherche des activités en fonction des critères
-
-            $activities = $activityRepository->findByFilters($data); // Utilisez votre méthode personnalisée pour filtrer les activités dans votre repository
+            $activities = $activityRepository->findByFilters(
+                $data['site'],
+                $data['name'],
+                $data['startDate'],
+                $data['endDate'],
+                $data['isOrganizer'],
+                $data['isParticipant'],
+                $data['isNotParticipant'],
+                $data['isPast'],
+                $currentUser
+            );
 
             // Afficher les résultats de la recherche
-            return $this->render('activity/index.html.twig', [
+            return $this->render('activity/search_results.html.twig', [
                 'activities' => $activities,
             ]);
         }

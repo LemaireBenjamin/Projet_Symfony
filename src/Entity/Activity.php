@@ -28,7 +28,7 @@ class Activity
     private ?int $duration = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $endDate = null;
+    private ?\DateTimeInterface $endDate = null; //CORRESPOND A LA DATE DE CLOTURE DES INSCRIPTIONS
 
     #[ORM\Column]
     private ?int $maxInscriptions = null;
@@ -103,6 +103,7 @@ class Activity
         return $this;
     }
 
+    //CORRESPOND A LA DATE DE CLOTURE DES INSCRIPTIONS
     public function getEndDate(): ?\DateTimeInterface
     {
         return $this->endDate;

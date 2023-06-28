@@ -17,6 +17,9 @@ class ActivityFilterType extends AbstractType
         $builder
             ->add('site', ChoiceType::class, [
                 'choices' => $options['sites'],
+                'choice_label' => function($site) {
+                    return $site->getSiteName();
+                },
                 'required' => false,
                 'label' => 'Site',
             ])
@@ -36,7 +39,7 @@ class ActivityFilterType extends AbstractType
             ])
             ->add('isOrganizer', CheckboxType::class, [
                 'required' => false,
-                'label' => 'Sortie dont je suis l\'organisateur',
+                'label' => 'Sorties dont je suis l\'organisateur',
             ])
             ->add('isParticipant', CheckboxType::class, [
                 'required' => false,
@@ -54,7 +57,6 @@ class ActivityFilterType extends AbstractType
                 'label' => 'Rechercher',
             ]);
     }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

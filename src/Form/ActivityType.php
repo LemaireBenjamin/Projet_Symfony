@@ -40,12 +40,11 @@ class ActivityType extends AbstractType
                     'accept' => 'image/*', // Permet de filtrer les fichiers par extension d'image
                 ]])
             ->add('city', EntityType::class, [
-                'mapped'=>false,
+                'mapped'=> false,
                 'class' => City::class,
                 'choice_label' => 'cityName'])
         ;
     }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
