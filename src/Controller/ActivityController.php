@@ -19,7 +19,8 @@ use Symfony\Bundle\SecurityBundle\Security;
 #[Route('/activity')]
 class ActivityController extends AbstractController
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;

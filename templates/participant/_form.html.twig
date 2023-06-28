@@ -1,21 +1,6 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
 
-
-{#    {{ form_label(form.username) }}#}
-{#    {{ form_widget(form.username) }}#}
-
-{#    {{ form_label(form.firstname) }}#}
-{#    {{ form_widget(form.firstname) }}#}
-
-{#    {{ form_label(form.lastname) }}#}
-{#    {{ form_widget(form.lastname) }}#}
-
-{#    {{ form_label(form.email) }}#}
-{#    {{ form_widget(form.email) }}#}
-
-{#    {{ form_label(form.phone) }}#}
-{#    {{ form_widget(form.phone) }}#}
     <div>
         <label for="username">Nom d'utilisateur :</label>
         <input type="text" id="username" name="username" value="{{ app.user.username }}" />
@@ -32,9 +17,6 @@
         <label for="confirm_password">Confirmer le mot de passe :</label>
         <input type="password" id="confirm_password" name="confirm_password" />
     </div>
-
-{#    {{ form_label(form.site) }}#}
-{#    {{ form_widget(form.site) }}#}
 
 <button class="btn">{{ button_label|default('Save') }}</button>
 
