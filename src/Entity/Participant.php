@@ -36,6 +36,9 @@ class Participant
     #[ORM\ManyToMany(targetEntity: Activity::class, inversedBy: 'participants')]
     private Collection $activities;
 
+    #[ORM\OneToOne(mappedBy: 'participant', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->activities = new ArrayCollection();
@@ -147,6 +150,28 @@ class Participant
                 $activity->setOrganizer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setParticipant(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getParticipant() !== $this) {
+            $user->setParticipant($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }
