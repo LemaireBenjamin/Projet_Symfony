@@ -74,6 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->username;
     }
 
+
     /**
      * @see UserInterface
      */

@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Entity\Activity;
+use App\Entity\Site;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
+use App\Repository\SiteRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ParticipantController extends AbstractController
 {
     private $entityManager;
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -57,18 +61,47 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_participant_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
+    public function edit(
+                         $id,
+                         Request $request,
+                         Participant $participant,
+                         ParticipantRepository $participantRepository,
+                         UserRepository $userRepository,
+                         SiteRepository $siteRepository): Response
     {
+
+        $findUser = $userRepository->findByParticipantId($id);
+        $user = $findUser[0];
+        $site = $participant->getSite()->getId();
+//        $site = $siteRepository->find($participant->getSite()->getId());
+        dump($site);
+        dump($user);
+
+        dd('kill me');
+//        GIGA CHEH MON REUF ❤
+
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
+
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $participantRepository->save($participant, true);
 
+//            $username = $request->request->get("email");
+//            $email = $request->request->get("email");
+//            $password = $request->request->get("password");
+//            dd($password);
+
+//            $user->setUsername($username);
+//            $user->setEmail($email);
+
+//            $userRepository->save($user,true);
+
             return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('participant/edit.html.twig', [
+        return $this->render('participant/edit.html.twig', [
             'participant' => $participant,
             'form' => $form,
         ]);
