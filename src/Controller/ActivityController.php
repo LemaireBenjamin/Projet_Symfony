@@ -28,7 +28,9 @@ class ActivityController extends AbstractController
     #[Route('/', name: 'app_activity_index', methods: ['GET', 'POST'])]
     public function index(Request $request,ActivityRepository $activityRepository, Security $security): Response
     {
+        $activities = $activityRepository->findAll();
         $currentUser = $security->getUser();
+
         $sites = $this->entityManager->getRepository(Site::class)->findAll();
         $form = $this->createForm(ActivityFilterType::class, null, [
             'sites' => $sites,
@@ -50,15 +52,10 @@ class ActivityController extends AbstractController
                 $data['isPast'],
                 $currentUser
             );
-
-            // Afficher les résultats de la recherche
-            return $this->render('activity/search_results.html.twig', [
-                'activities' => $activities,
-            ]);
         }
 
         return $this->render('activity/index.html.twig', [
-            'activities' =>  $activityRepository->findAll(),
+            'activities' => $activities,
             'form' => $form->createView(),
         ]);
     }
@@ -76,7 +73,7 @@ class ActivityController extends AbstractController
             return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('activity/new.html.twig', [
+        return $this->render('activity/new.html.twig', [
             'activity' => $activity,
             'form' => $form,
         ]);
@@ -102,7 +99,7 @@ class ActivityController extends AbstractController
             return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('activity/edit.html.twig', [
+        return $this->render('activity/edit.html.twig', [
             'activity' => $activity,
             'form' => $form,
         ]);

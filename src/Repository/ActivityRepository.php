@@ -78,7 +78,7 @@ class ActivityRepository extends ServiceEntityRepository
             $queryBuilder->leftJoin('a.participants', 'p')
                 ->andWhere($queryBuilder->expr()->orX(
                     $queryBuilder->expr()->isNull('p'),
-                    $queryBuilder->expr()->neq('p.id', ':participantId')
+                    $queryBuilder->expr()->neq('a.id', ':participantId')
                 ))
                 ->setParameter('participantId', $currentUser->getId());
         }
