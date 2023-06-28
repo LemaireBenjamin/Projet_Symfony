@@ -18,7 +18,6 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 class ActivityType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

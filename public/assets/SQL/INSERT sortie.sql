@@ -45,7 +45,7 @@ VALUES (1, 1, 'Cinéville', 'Rue Marie de Kerstrat', NULL, NULL, 2),
 
 INSERT INTO `activity` (`id`, `name`, `start_date`, `duration`, `end_date`, `max_inscriptions`, `description`,
                         `activity_status`, `picture_url`, `organizer_id`, `site_id`, `place_id`, `status_id`)
-VALUES (1, 'Cinéma', '2023-06-30 11:03:59', 180, '2023-06-30 11:03:59', 15, 'Film : Mais qui à tué Pamela Rose', 1,
+VALUES (1, 'Cinéma', '2023-06-30 15:00:00', 180, '2023-06-30 18:00:00', 15, 'Film : Mais qui à tué Pamela Rose', 1,
         NULL, 1, 2, 1, 1);
 
 INSERT INTO `participant_activity` (`participant_id`, `activity_id`)
