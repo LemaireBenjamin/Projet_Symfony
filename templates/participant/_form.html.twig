@@ -3,7 +3,7 @@
 
     <div>
         <label for="username">Nom d'utilisateur :</label>
-        <input type="text" id="username" name="username" value="{{ app.user.username }}" />
+        <input type="text" id="username" name="username" value="{{ app.user is defined ? app.user.username : ''  }}" />
     </div>
     <div>
         <label for="email">Adresse e-mail :</label>

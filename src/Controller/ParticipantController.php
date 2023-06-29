@@ -85,6 +85,11 @@ class ParticipantController extends AbstractController
             $password = $request->request->get("password");
 
             try {
+                $existingUser = $userRepository->findOneByUsername($username);
+
+                if ($existingUser && $existingUser !== $user) {
+                    throw new \Exception("Ce nom d'utilisateur est déjà pris.");
+                }
 
                 $user->setUsername($username);
                 $user->setEmail($email);
@@ -102,13 +107,11 @@ class ParticipantController extends AbstractController
 
             } catch (\Exception $e) {
 
-                // Gérer l'exception et afficher un message d'erreur approprié
+
+
                 $errorMessage = 'Une erreur s\'est produite lors de la mise à jour de l\'utilisateur : ' . $e->getMessage();
-                // Faites quelque chose avec l'erreur, comme la journaliser ou afficher un message à l'utilisateur
-                // Par exemple : $logger->error($errorMessage);
+
                 $this->addFlash('error', $errorMessage);
-                // Redirigez vers une page d'erreur ou revenez à la page précédente, selon votre cas d'utilisation
-                //return $this->redirectToRoute('app_participant_edit',['id' => $participant->getId()]);
             }
         }
 
