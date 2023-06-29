@@ -5,9 +5,13 @@ namespace App\Controller;
 use App\Entity\Activity;
 use App\Entity\Site;
 use App\Entity\Status;
+use App\Entity\User;
 use App\Form\ActivityFilterType;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
+use App\Repository\ParticipantRepository;
+use App\Repository\PlaceRepository;
+use App\Repository\SiteRepository;
 use App\Repository\StatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,6 +34,7 @@ class ActivityController extends AbstractController
     public function index(Request $request,ActivityRepository $activityRepository, Security $security): Response
     {
         $activities = $activityRepository->findAll();
+//        dd($activities);
         $currentUser = $security->getUser();
 
         $sites = $this->entityManager->getRepository(Site::class)->findAll();
@@ -54,7 +59,6 @@ class ActivityController extends AbstractController
                 $currentUser
             );
         }
-
         return $this->render('activity/index.html.twig', [
             'activities' => $activities,
             'form' => $form->createView(),
@@ -62,13 +66,24 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/new', name: 'app_activity_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ActivityRepository $activityRepository): Response
+    public function new(Request $request, PlaceRepository $placeRepository, ParticipantRepository $participantRepository, StatusRepository $statusRepository, ActivityRepository $activityRepository): Response
     {
         $activity = new Activity();
+
+        $participant = $participantRepository->find($this->getUser()->getId());
+
+        $site = $participant->getSite();
+        $places = $placeRepository->findAll();
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
-
+//        var_dump($form);
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $status = $statusRepository->find(1);
+            $activity->setOrganizer($participant);
+            $activity->setSite($site);
+            $activity->setStatus($status);
+
             $activityRepository->save($activity, true);
 
             return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
@@ -76,6 +91,7 @@ class ActivityController extends AbstractController
 
         return $this->render('activity/new.html.twig', [
             'activity' => $activity,
+            'places' => $places,
             'form' => $form,
         ]);
     }

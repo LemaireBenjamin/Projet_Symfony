@@ -4,16 +4,15 @@ namespace App\Form;
 
 use App\Entity\Activity;
 use App\Entity\City;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use App\Entity\Place;
+use App\Entity\Site;
+use App\Entity\Status;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 
 class ActivityType extends AbstractType
@@ -24,11 +23,7 @@ class ActivityType extends AbstractType
             ->add('name',TextType::class, [
                 'label' => 'Un nom pour votre activité'
             ])
-            ->add('startDate', DateType::class, [
-                'label' => 'Date de début',
-                'attr' => ['placeholder' => 'jj/mm/aaaa'],
-                'constraints' => [new DateTime(['format' => 'D/M/Y'])]
-                ])
+            ->add('startDate')
             ->add('duration')
             ->add('endDate')
             ->add('maxInscriptions')
@@ -39,10 +34,23 @@ class ActivityType extends AbstractType
                 'attr' => [
                     'accept' => 'image/*', // Permet de filtrer les fichiers par extension d'image
                 ]])
-            ->add('city', EntityType::class, [
+            ->add('site', EntityType::class, [
+//                'mapped'=> true,
+                'class' => Site::class,
+                'choice_label' => 'siteName'])
+
+            ->add('place', EntityType::class, [
                 'mapped'=> false,
-                'class' => City::class,
-                'choice_label' => 'cityName'])
+                'multiple' => false,
+                'expanded' =>false,
+                'class' => Place::class,
+                'choice_label' => 'placeName'])
+
+            ->add('placeStreet', EntityType::class, [
+                'mapped'=> false,
+                'class' => Place::class,
+                'choice_label' => 'placeStreet'])
+
         ;
     }
     public function configureOptions(OptionsResolver $resolver): void
