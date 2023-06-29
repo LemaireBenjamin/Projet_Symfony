@@ -70,7 +70,6 @@ class ParticipantController extends AbstractController
                          UserRepository $userRepository,
                          UserPasswordHasherInterface $userPasswordHasher): Response
     {
-
         $findUser = $userRepository->findByParticipantId($id);
         $user = $findUser[0];
 

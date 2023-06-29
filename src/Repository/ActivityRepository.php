@@ -68,17 +68,26 @@ class ActivityRepository extends ServiceEntityRepository
                 ->setParameter('organizer', $currentUser);
         }
 
-        if ($isParticipant) {
-            $queryBuilder->innerJoin('a.participants', 'p')
-                ->andWhere('p.id = :participantId')
+        if ($isParticipant && !$isNotParticipant) {
+            $queryBuilder->innerJoin('a.participants', 'p1')
+                ->andWhere('p1.id = :participantId')
                 ->setParameter('participantId', $currentUser->getId());
         }
 
-        if ($isNotParticipant) {
-            $queryBuilder->leftJoin('a.participants', 'p')
+        if ($isNotParticipant && !$isParticipant) {
+            $queryBuilder->leftJoin('a.participants', 'p2')
                 ->andWhere($queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->isNull('p'),
+                    $queryBuilder->expr()->isNull('p2'),
                     $queryBuilder->expr()->neq('a.id', ':participantId')
+                ))
+                ->setParameter('participantId', $currentUser->getId());
+        }
+
+        if ($isParticipant && $isNotParticipant) {
+            $queryBuilder->leftJoin('a.participants', 'p2')
+                ->andWhere($queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->isNull('p2'),
+                    $queryBuilder->expr()->neq('p2.id', ':participantId')
                 ))
                 ->setParameter('participantId', $currentUser->getId());
         }

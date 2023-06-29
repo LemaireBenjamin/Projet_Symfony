@@ -5,7 +5,116 @@
 {% block body %}
     <h1>Create new Activity</h1>
 
-    {{ include('activity/_form.html.twig') }}
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.site) }}
+    {{ form_row(form.place) }}
+
+    <select id="place-select">
+        {% for place in places %}
+            <option value="{{ place.id }}">{{ place.placeName }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="rue">Rue :</label>
+    <input type="text" id="rue" name="rue" value="">
+
+    <label for="latitude">Latitude :</label>
+    <input type="text" id="latitude" name="latitude" value="">
+
+    <label for="longitude">Longitude :</label>
+    <input type="text" id="longitude" name="longitude" value="">
+
+    {{ form_end(form) }}
 
     <a href="{{ path('app_activity_index') }}">Retour aux activités</a>
+
+    <script>
+        var places = {{ places|json_encode|raw }};
+        console.log(places[0]);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var placeSelect = document.getElementById('place-select');
+            placeSelect.addEventListener('change', function() {
+                var selectedPlaceId = this.value;
+                console.log('ID de la place sélectionnée : ' + selectedPlaceId);
+                // Récupérer l'objet place correspondant à l'ID sélectionné
+                var selectedPlace = places.find(function(place) {
+                    return place.id === selectedPlaceId;
+                });
+                // Mettre à jour les valeurs des champs avec les données de la place sélectionnée
+                var rueInput = document.getElementById('rue');
+                rueInput.value = selectedPlace.placeStreet;
+
+                var latitudeInput = document.getElementById('latitude');
+                latitudeInput.value = selectedPlace.latitude;
+
+                var longitudeInput = document.getElementById('longitude');
+                longitudeInput.value = selectedPlace.longitude;
+            });
+        });
+    </script>
 {% endblock %}
+
+
+
+
+
+
+
+
+{#{% extends 'base.html.twig' %}#}
+{#{% block javascripts %}#}
+{#    <script src="{{ asset('assets/js/newActivity.js') }}"></script>#}
+{#    <script>#}
+{#        var places = {{ places|json_encode|raw }};#}
+{#        console.log("salut");#}
+{#        console.log(places);#}
+{#        console.log("fin");#}
+
+{#        document.addEventListener('DOMContentLoaded', function() {#}
+{#            var placeSelect = document.getElementById('place-select');#}
+{#            placeSelect.addEventListener('change', function() {#}
+{#                var selectedPlaceId = this.value;#}
+{#                console.log('ID de la place sélectionnée : ' + selectedPlaceId);#}
+{#                // Récupérer l'élément input#}
+{#                var inputElement = document.getElementById('rue');#}
+{#                // Changer la valeur de l'attribut value#}
+{#                // inputElement.value = places[selectedPlaceId];#}
+{#                var firstPlaceId = places[0].id;#}
+{#                console.log('ID du premier élément de places : ' + firstPlaceId);#}
+{#            });#}
+{#        });#}
+{#    </script>#}
+{#{% endblock %}#}
+{#{% block title %}New Activity{% endblock %}#}
+
+{#{% block body %}#}
+{#    <h1>Create new Activity</h1>#}
+
+{#    {{ form_start(form) }}#}
+{#    {{ form_row(form.name) }}#}
+{#    {{ form_row(form.site) }}#}
+{#    {{ form_row(form.place, {'attr': {'id': 'place-select'}}) }}#}
+{#    <label for="place-select">Lieu</label>#}
+{#    <select id="place-select">#}
+{#        <option value="">Sélectionnez une place</option>#}
+{#        {% for place in places %}#}
+{#            <option value="{{ place.id }}">{{ place.placeName }}</option>#}
+{#        {% endfor %}#}
+{#    </select>#}
+
+{#    <label for="rue">Rue :</label>#}
+{#    <input type="text" id="rue" name="rue" value="">#}
+
+{#    <label for="latitude">Latitude :</label>#}
+{#    <input type="text" id="latitude" name="latitude" value="">#}
+
+{#    <label for="longitude">Longitude :</label>#}
+{#    <input type="text" id="longitude" name="longitude" value="">#}
+
+
+{#    {{ form_end(form) }}#}
+
+{#    <a href="{{ path('app_activity_index') }}">Retour aux activités</a>#}
+{#{% endblock %}#}

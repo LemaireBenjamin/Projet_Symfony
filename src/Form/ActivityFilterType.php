@@ -14,9 +14,6 @@ class ActivityFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $isNotParticipant = $options['isNotParticipant'];
-        $isParticipant = $options['isParticipant'];
-
         $builder
             ->add('site', ChoiceType::class, [
                 'choices' => $options['sites'],
@@ -48,16 +45,10 @@ class ActivityFilterType extends AbstractType
             ->add('isParticipant', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Sorties auxquelles je suis inscrit',
-                'attr' => [
-                    'disabled' =>$isNotParticipant ? 'disabled' : null,
-                ],
             ])
             ->add('isNotParticipant', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Sorties auxquelles je ne suis pas inscrit',
-                'attr' => [
-                    'disabled' => $isParticipant ? 'disabled' : null,
-                ],
             ])
             ->add('isPast', CheckboxType::class, [
                 'required' => false,
@@ -72,8 +63,6 @@ class ActivityFilterType extends AbstractType
         $resolver->setDefaults([
             'data_class' => null,
             'sites' => [], // Les sites disponibles (récupérés depuis la base de données)
-            'isNotParticipant' => true,
-            'isParticipant' => false,
         ]);
     }
 }

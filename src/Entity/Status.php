@@ -55,7 +55,6 @@ class Status
     public function setStatusLabel(string $statusLabel): static
     {
         $this->statusLabel = $statusLabel;
-
         return $this;
     }
 

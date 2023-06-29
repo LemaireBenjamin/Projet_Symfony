@@ -36,9 +36,6 @@ class Activity
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $activityStatus = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $pictureUrl = null;
 
@@ -112,7 +109,6 @@ class Activity
     public function setEndDate(\DateTimeInterface $endDate): static
     {
         $this->endDate = $endDate;
-
         return $this;
     }
 
@@ -136,18 +132,6 @@ class Activity
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getActivityStatus(): ?int
-    {
-        return $this->activityStatus;
-    }
-
-    public function setActivityStatus(?int $activityStatus): static
-    {
-        $this->activityStatus = $activityStatus;
 
         return $this;
     }
