@@ -56,8 +56,16 @@
                 <td>{{ activity.status.statusLabel}}</td>
                 <td>{{ activity.organizer.firstname }} {{ activity.organizer.lastname }}</td>
                 <td>
-                    <a href="{{ path('app_activity_show', {'id': activity.id}) }}">Afficher</a>
-                    <a href="{{ path('app_activity_edit', {'id': activity.id}) }}">Modifier</a>
+
+                    {% if activity.status.statusLabel is same as ("Ouverte") %}
+                        <a href="{{ path('app_activity_show', {'id': activity.id}) }}">Afficher</a>
+                        <form action="post">
+
+                        </form>
+                    {% else %}
+                        <a href="{{ path('app_activity_edit', {'id': activity.id}) }}">Modifier</a>
+                        <p>Publier</p>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
