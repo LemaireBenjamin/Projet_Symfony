@@ -15,6 +15,7 @@ use App\Repository\SiteRepository;
 use App\Repository\StatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -76,7 +77,7 @@ class ActivityController extends AbstractController
         $places = $placeRepository->findAll();
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
-//        var_dump($form);
+//        dd($places);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $status = $statusRepository->find(1);
@@ -95,6 +96,7 @@ class ActivityController extends AbstractController
             'form' => $form,
         ]);
     }
+
 
     #[Route('/{id}', name: 'app_activity_show', methods: ['GET'])]
     public function show(Activity $activity, Status $status): Response
