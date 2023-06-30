@@ -110,7 +110,7 @@ class ParticipantController extends AbstractController
 
                 $errorMessage = 'Une erreur s\'est produite lors de la mise à jour de l\'utilisateur : ' . $e->getMessage();
 
-                $this->addFlash('error', $errorMessage);
+                $this->addFlash('warning', $errorMessage);
             }
         }
 
