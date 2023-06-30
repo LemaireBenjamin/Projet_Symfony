@@ -96,9 +96,38 @@ class ActivityController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_activity_show', methods: ['GET'])]
-    public function show(Activity $activity, Status $status): Response
+
+    #[Route('/{id}', name: 'app_activity_show', methods: ['GET','POST'])]
+    public function show(
+        Request $request,
+        Activity $activity,
+        ActivityRepository $activityRepository,
+        ParticipantRepository $participantRepository,
+        $id): Response
     {
+
+        $activity = $activityRepository->find($id);
+        $user = $this->getUser();
+
+        if ($activity->getParticipants()->contains($user)) {
+            throw new \Exception('L\'utilisateur est déjà inscrit à cette activité.');
+        }
+
+        if ($activity->getParticipants()->count() >= $activity->getMaxInscriptions()) {
+            throw new \Exception('Le nombre maximum d\'inscriptions à cette activité a été atteint.');
+        }
+
+        if ($request->isMethod('POST')) {
+
+            $participant = $participantRepository->findParticipantByUserId($user->getId());
+
+            $activity->addParticipant($participant[0]);
+
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_activity_show', ['id' => $activity->getId()]);
+        }
+
         return $this->render('activity/show.html.twig', [
             'activity' => $activity,
         ]);
@@ -131,4 +160,27 @@ class ActivityController extends AbstractController
 
         return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/unsubscribe/{id}',name:'app_activity_unsubscribe',methods:['POST'])]
+    public function toUnsubscribe(Request $request,
+                                  Activity $activity,
+                                  ActivityRepository $activityRepository,
+                                  ParticipantRepository $participantRepository,
+                                  $id
+    ): Response
+    {
+        $activity = $activityRepository->find($id);
+        $user = $this->getUser();
+
+        if ($request->isMethod('POST')) {
+
+            $participant = $participantRepository->findParticipantByUserId($user->getId());
+
+            $activity->removeParticipant($participant[0]);
+
+            $this->entityManager->flush();
+        }
+        return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
+    }
+
 }

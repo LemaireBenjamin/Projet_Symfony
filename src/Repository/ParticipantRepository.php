@@ -55,6 +55,19 @@ class ParticipantRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findParticipantByUserId($id): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        return $entityManager->createQuery(
+            'SELECT p
+                FROM App\Entity\Participant p
+                INNER JOIN App\Entity\User u
+                WHERE u.id = :id AND p = u.participant')
+            ->setParameter('id', $id)
+            ->getResult();
+    }
+
 //    public function findOneByIsOrganiser(int $value): ?Participant
 //    {
 //        return $this->createQueryBuilder('p')

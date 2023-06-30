@@ -3,15 +3,21 @@
 {% block title %}Liste des sorties{% endblock %}
 
 {% block body %}
+
+    {% set userUsername = app.user.username%}
+    {% set userFirstname = app.user.participant.firstname %}
+    {% set userName = app.user.participant.lastname|first|capitalize  %}
+
     <div class="titre">
         <div class="left">
             <h1>Liste des sorties</h1>
         </div>
         <div class="right">
             <h6>Nous sommes le {{ "now"|format_datetime('full', 'none', locale='fr') }}</h6>
-            <h6>Participant : {{ app.user.username }}</h6>
+            <h6>Participant : {{ userFirstname }} {{ userName }}.</h6>
         </div>
     </div>
+
     <div class="filters">
         <h6>Filtrer les sorties</h6>
         <div class="filters_container">
@@ -34,50 +40,100 @@
             </div>
         </div>
     </div>
-    <table class="table">
-        <thead>
+
+    <table class="table table-bordered table-striped">
+        <thead class=" thead-dark">
             <tr>
                 <th>Nom de la sortie</th>
                 <th>Date de la sortie</th>
                 <th>Clôture</th>
                 <th>Inscrits / Places</th>
                 <th>Etat</th>
+                <th>Inscrit</th>
                 <th>Organisateur</th>
                 <th>Actions</th>
             </tr>
         </thead>
+
         <tbody>
+
         {% for activity in activities %}
-            <tr>
-                <td>{{ activity.name }}</td>
-                <td>{{ activity.startDate ? activity.startDate|format_datetime('short', 'short', locale='fr') }}</td>
-                <td>{{ activity.endDate ? activity.endDate|format_datetime('short', 'none', locale='fr')}}</td>
-                <td>{{ activity.participants|length }} / {{ activity.maxInscriptions }}</td>
-                <td>{{ activity.status.statusLabel}}</td>
-                <td>{{ activity.organizer.firstname }} {{ activity.organizer.lastname }}</td>
-                <td>
 
-                    {% if activity.status.statusLabel is same as ("Ouverte") %}
-                        <a href="{{ path('app_activity_show', {'id': activity.id}) }}">Afficher</a>
-                        <form action="post">
+            {% if not activity.status.statusLabel is same as ("Créée")
+                or  activity.organizer.id == app.user.participant.id %}
 
-                        </form>
-                    {% else %}
-                        <a href="{{ path('app_activity_edit', {'id': activity.id}) }}">Modifier</a>
-                        <p>Publier</p>
-                    {% endif %}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">Pas d'activité trouvée</td>
-            </tr>
+                <tr>
+                    <td>{{ activity.name }}</td>
+                    <td>{{ activity.startDate ? activity.startDate|format_datetime('short', 'short', locale='fr') }}</td>
+                    <td>{{ activity.endDate ? activity.endDate|format_datetime('short', 'none', locale='fr')}}</td>
+                    <td>{{ activity.participants|length }} / {{ activity.maxInscriptions }}</td>
+                    <td>{{ activity.status.statusLabel}}</td>
+                    <td>
+
+                        {% if activity.participants|filter(participant => participant.user.username == app.user.username)|length > 0 %}
+                            <p class="text-center">X</p>
+                        {% endif %}
+                    </td>
+
+                    <td>{{ activity.organizer.firstname }} {{ activity.organizer.lastname }}</td>
+
+                    <td>
+
+                        {% if activity.status.statusLabel is same as ("Créée") %}
+                            <a href="{{ path('app_activity_edit', {'id': activity.id}) }}">Modifier</a>
+
+                            <p>Publier</p>
+
+                        {% else %}
+                            <a href="{{ path('app_activity_show', {'id': activity.id}) }}">Afficher</a>
+
+                            {% if activity.status.statusLabel is same as ("Ouverte")  %}
+
+
+                                {% if activity.participants|filter(participant => participant.user.username == app.user.username)|length > 0 %}
+
+                                    <form action="{{ path('app_activity_unsubscribe', {'id': activity.id}) }}" method="post">
+                                        <button type="submit">Se désister</button>
+                                    </form>
+
+                                {% else %}
+
+                                    <form action="{{ path('app_activity_show', {'id': activity.id}) }}" method="post">
+                                        <button type="submit">S'inscrire</button>
+                                    </form>
+
+                                {% endif %}
+
+                            {% elseif  activity.status.statusLabel is same as ("Créée") %}
+
+                                <a href="{{ path('app_activity_edit', {'id': activity.id}) }}">Modifier</a>
+
+                                <p>Publier</p>
+
+
+                            {% endif %}
+
+                        {% endif %}
+                    </td>
+                </tr>
+
+{#            {% else %}#}
+{#                <tr>#}
+{#                    <td colspan="10">Pas d'activité trouvée</td>#}
+{#                </tr>#}
+{#                #}
+                {% endif %}
+
         {% endfor %}
+
         </tbody>
+
     </table>
+
+
+
     <div class="div_button">
         <button type="button" class="btn btn-primary"><a class="link_button" href="{{ path('app_activity_new') }}">Créer une sortie</a></button>
     </div>
-
 
 {% endblock %}
