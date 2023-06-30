@@ -31,7 +31,7 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             //Flash
-            $this->addFlash('success', 'Incription Créer avec success!');
+            $this->addFlash('success', 'Incription Créee avec success!');
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
