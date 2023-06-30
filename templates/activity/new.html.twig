@@ -1,69 +1,76 @@
 {% extends 'base.html.twig' %}
-{% block javascripts %}
 
-{% endblock %}
 {% block title %}New Activity{% endblock %}
 
 {% block body %}
-    <h1>Create new Activity</h1>
-    {% set tableau_json = [] %}
+<div class="title">
+    <h1>Créer une sortie</h1>
+</div>
+<div class="container">
+    <div class="left col-6">
+        {{ form_start(form, {'attr': {'id': 'activity_form'}}) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.startDate) }}
+        {{ form_row(form.endDate) }}
+        {{ form_row(form.maxInscriptions) }}
+        {{ form_row(form.duration) }}
+        {{ form_row(form.description) }}
+    </div>
+    <div class="right">
+        {{ form_row(form.site) }}
+        {{ form_row(form.cities) }}
+        {{ form_row(form.places) }}
+        {{ form_row(form.placeStreet) }}
+        {{ form_row(form.submit) }}
+        {{ form_end(form) }}
+    </div>
+</div>
 
-    {% for place in places %}
-        {% set placeData = {
-            'id': place.id,
-            'placeId': place.placeId,
-            'placeName': place.placeName,
-            'placeStreet': place.placeStreet,
-            'latitude': place.latitude,
-            'longitude': place.longitude
-        } %}
-        {% set tableau_json = tableau_json|merge([placeData]) %}
-    {% endfor %}
+
+
+    <a href="{{ path('app_activity_index') }}">Retour aux activités</div>
+{% endblock %}
+
+{% block javascripts %}
     <script>
-        var tableau_js = JSON.parse('{{ tableau_json|json_encode()|e('js') }}');
+        window.onload = () => {
+            let city = document.querySelector("#activity_cities");
+            let placeSelect = document.querySelector("#activity_places");
+            let rueInput = document.querySelector("#activity_placeStreet");
 
-        var selectLieu = document.getElementById('place-select');
-        var inputRue = document.getElementById('rue_input');
+            city.addEventListener("change", function () {
+                let form = document.querySelector("#activity_form");
+                let data = this.name + "=" + this.value;
 
-        selectLieu.addEventListener('change', function() {
-            var selectedId = parseInt(selectLieu.value);
+                fetch(form.action, {
+                    method: form.getAttribute("method"),
+                    body: data,
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded; charset:UTF-8"
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    let content = document.createElement('html');
+                    content.innerHTML = html;
+                    let nouveauPlaceSelect = content.querySelector("#activity_places");
+                    placeSelect.replaceWith(nouveauPlaceSelect);
+                    placeSelect = nouveauPlaceSelect;
 
-            var selectedPlace = tableau_js.find(function(place) {
-                return place.id === selectedId;
+                    // Add change event listener to the new select element
+                    placeSelect.addEventListener("change", function () {
+                        let selectedOption = this.options[this.selectedIndex];
+                        let placeId = selectedOption.value;
+
+                        // Make a request to retrieve the placeStreet based on the selected placeId
+                        fetch('get-place-street/' + placeId)
+                            .then(response => response.text())
+                            .then(placeStreet => {
+                                rueInput.value = placeStreet; // Set the value of rueInput
+                            });
+                    });
+                });
             });
-
-            if (selectedPlace) {
-                inputRue.value = selectedPlace.placeStreet;
-            } else {
-                inputRue.value = '';
-            }
-        });
-
-        console.log(tableau_js);
+        };
     </script>
-    {{ form_start(form) }}
-    {{ form_row(form.name) }}
-    {{ form_row(form.site) }}
-{#    {{ form_row(form.place, {'attr': {'id': 'place-select'}}) }}#}
-    <label for="place-select">Lieu</label>
-    <select id="place-select">
-        <option value="">Sélectionnez un lieu</option>
-        {% for place in places %}
-            <option value="{{ place.id }}">{{ place.placeName }}</option>
-        {% endfor %}
-    </select>
-
-    <label for="rue">Rue :</label>
-    <input type="text" id="rue" name="rue" value="" class="rue_input">
-
-    <label for="latitude">Latitude :</label>
-    <input type="text" id="latitude" name="latitude" value="">
-
-    <label for="longitude">Longitude :</label>
-    <input type="text" id="longitude" name="longitude" value="">
-
-
-    {{ form_end(form) }}
-
-    <a href="{{ path('app_activity_index') }}">Retour aux activités</a>
 {% endblock %}

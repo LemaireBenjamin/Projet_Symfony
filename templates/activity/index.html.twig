@@ -3,11 +3,11 @@
 {% block title %}Liste des sorties{% endblock %}
 
 {% block body %}
-    <div class="titre">
-        <div class="left">
+    <div class="accueil">
+        <div class="accueil-left">
             <h1>Liste des sorties</h1>
         </div>
-        <div class="right">
+        <div class="accueil-right">
             <h6>Nous sommes le {{ "now"|format_datetime('full', 'none', locale='fr') }}</h6>
             <h6>Participant : {{ app.user.username }}</h6>
         </div>

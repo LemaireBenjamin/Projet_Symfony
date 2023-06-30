@@ -3,19 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Activity;
+use App\Entity\Place;
 use App\Entity\Site;
 use App\Entity\Status;
-use App\Entity\User;
 use App\Form\ActivityFilterType;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
+use App\Repository\CityRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\PlaceRepository;
-use App\Repository\SiteRepository;
 use App\Repository\StatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -67,17 +66,17 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/new', name: 'app_activity_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, PlaceRepository $placeRepository, ParticipantRepository $participantRepository, StatusRepository $statusRepository, ActivityRepository $activityRepository): Response
+    public function new(Request $request, CityRepository $cityRepository, PlaceRepository $placeRepository, ParticipantRepository $participantRepository, StatusRepository $statusRepository, ActivityRepository $activityRepository): Response
     {
         $activity = new Activity();
 
         $participant = $participantRepository->find($this->getUser()->getId());
-
+        $cities = $cityRepository->findAll();
         $site = $participant->getSite();
         $places = $placeRepository->findAll();
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
-//        dd($places);
+//        dd($cities);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $status = $statusRepository->find(1);
@@ -92,10 +91,22 @@ class ActivityController extends AbstractController
 
         return $this->render('activity/new.html.twig', [
             'activity' => $activity,
-            'places' => $places,
+//            'cities' => $cities,
+//            'places' => $places,
             'form' => $form,
         ]);
     }
+
+    #[Route('/get-place-street/{placeId}', name: 'get_place_street', methods: ['GET', 'POST'])]
+    public function getPlaceStreet(PlaceRepository $placeRepository, $placeId): Response
+    {
+        $place = $placeRepository->find($placeId);
+        $placeStreet = $place ? $place->getPlaceStreet() : '';
+
+        return new Response($placeStreet);
+    }
+
+
 
 
     #[Route('/{id}', name: 'app_activity_show', methods: ['GET'])]
@@ -130,7 +141,6 @@ class ActivityController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$activity->getId(), $request->request->get('_token'))) {
             $activityRepository->remove($activity, true);
         }
-
         return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
     }
 }
