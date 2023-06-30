@@ -34,9 +34,16 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_participant_index') }}">back to list</a>
-
-    <a href="{{ path('app_participant_edit', {'id': participant.id}) }}">edit</a>
-
+<div class="input-group mb-3">
+    <div class="input-group-prepend" id="bouton2-texte">
+        <a href="{{ path('app_participant_index') }}">
+            <button class="btn btn-outline-success" type="button">Retour à la liste</button>
+        </a>
+        <a href="{{ path('app_participant_edit', {'id': participant.id}) }}">
+            <button class="btn btn-outline-warning" type="button">Modifier</button>
+        </a>
+    </div>
     {{ include('participant/_delete_form.html.twig') }}
+</div>
+
 {% endblock %}

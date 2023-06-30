@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Participant;
 use App\Entity\Site;
 use App\Entity\User;
+use Faker\Provider\Text;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 
@@ -20,16 +21,23 @@ class ParticipantType extends AbstractType
     {
         $builder
 
-            ->add('lastname')
-            ->add('firstname')
-            ->add('phone')
+            ->add('lastname', TextType::class, [
+                'label'=>'Nom'
+            ])
+            ->add('firstname', TextType::class, [
+                'label'=>'Prénom'
+            ])
+            ->add('phone', TextType::class, [
+                'label'=>'Télephone'
+            ])
             ->add('site',EntityType::class,[
                 'class' => Site::class,
-                'label' => 'Nom du site',
+                'label' => 'Site de rattachement',
                 'choice_label' => 'siteName',
                 'multiple' => false,
                 'required' => false
             ])
+
 //            ->add('username',EntityType::class,[
 //                'class' => User::class,
 //                'label' => 'Username',

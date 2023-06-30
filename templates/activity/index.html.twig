@@ -8,8 +8,11 @@
             <h1>Liste des sorties</h1>
         </div>
         <div class="right">
-            <h6>Nous sommes le {{ "now"|format_datetime('full', 'none', locale='fr') }}</h6>
-            <h6>Participant : {{ app.user.username }}</h6>
+            <h6>Nous sommes le : {{ "now"|format_datetime('full', 'none', locale='fr') }}</h6>
+            <h6>Participant :
+             {% autoescape false %}
+                <strong>{{ app.user.username |upper }}</strong>
+            {% endautoescape %} </h6>
         </div>
     </div>
     <div class="filters">

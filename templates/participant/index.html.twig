@@ -9,10 +9,10 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Lastname</th>
-                <th>Firstname</th>
-                <th>Phone</th>
-                <th>Organiser</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Télephone</th>
+                <th>Organisateur</th>
                 <th>Active</th>
                 <th>actions</th>
             </tr>
@@ -28,7 +28,7 @@
                 <td>{{ participant.active ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('app_participant_show', {'id': participant.id}) }}" class="btn btn-success">Voir</a>
-                    <a href="{{ path('app_participant_edit', {'id': participant.id}) }}" >éditer</a>
+                    <a href="{{ path('app_participant_edit', {'id': participant.id}) }}" class="btn btn-warning">éditer</a>
                 </td>
             </tr>
         {% else %}
