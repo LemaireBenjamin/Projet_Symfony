@@ -4,15 +4,18 @@
 
 {% block body %}
 
+
     {% set userUsername = app.user.username%}
     {% set userFirstname = app.user.participant.firstname %}
     {% set userName = app.user.participant.lastname|first|capitalize  %}
 
-    <div class="titre">
-        <div class="left">
+
+    <div class="accueil">
+        <div class="accueil-left">
+
             <h1>Liste des sorties</h1>
         </div>
-        <div class="right">
+        <div class="accueil-right">
             <h6>Nous sommes le {{ "now"|format_datetime('full', 'none', locale='fr') }}</h6>
             <h6>Participant : {{ userFirstname }} {{ userName }}.</h6>
         </div>
