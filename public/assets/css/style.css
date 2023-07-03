@@ -69,6 +69,8 @@ h1 {
     justify-content: center;
 }
 
+
+
 .left {
     display: flex;
     flex-direction: column;

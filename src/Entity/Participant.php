@@ -3,10 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,12 +18,23 @@ class Participant
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'Le nom de famille est requis')]
+    #[Assert\Length(max: 50, maxMessage: 'Le nom de famille ne peut pas dépasser {{ limit }} caractères')]
+    #[Assert\Regex(pattern: '/^[A-Za-z\- ]+$/', message: 'Le nom de famille n\'est pas valide')]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'Le prénom est requis')]
+    #[Assert\Length(max: 50, maxMessage: 'Le prénom ne peut pas dépasser {{ limit }} caractères')]
+    #[Assert\Regex(pattern: '/^[A-Za-z\- ]+$/', message: 'Le prénom n\'est pas valide')]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 15, nullable: true)]
+    #[Assert\Length(max: 15, maxMessage: 'Le numéro de téléphone ne peut pas dépasser {{ limit }} caractères')]
+    #[Assert\Regex(
+        pattern: '/^\+?\d+$/',
+        message: 'Le numéro de téléphone doit être un nombre positif sans espaces ni caractères spéciaux'
+    )]
     private ?string $phone = null;
 
     #[ORM\Column]

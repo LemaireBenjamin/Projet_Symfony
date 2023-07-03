@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Activity;
-use App\Entity\Place;
 use App\Entity\Site;
-use App\Entity\Status;
 use App\Form\ActivityFilterType;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
@@ -34,7 +32,6 @@ class ActivityController extends AbstractController
     public function index(Request $request,ActivityRepository $activityRepository, Security $security): Response
     {
         $activities = $activityRepository->findAll();
-//        dd($activities);
         $currentUser = $security->getUser();
 
         $sites = $this->entityManager->getRepository(Site::class)->findAll();
@@ -115,7 +112,6 @@ class ActivityController extends AbstractController
    #[Route('/{id}', name: 'app_activity_show', methods: ['GET','POST'])]
    public function show(
        Request $request,
-       Activity $activity,
        ActivityRepository $activityRepository,
        ParticipantRepository $participantRepository,
        $id): Response
@@ -177,7 +173,6 @@ class ActivityController extends AbstractController
 
     #[Route('/unsubscribe/{id}',name:'app_activity_unsubscribe',methods:['POST'])]
     public function toUnsubscribe(Request $request,
-                                  Activity $activity,
                                   ActivityRepository $activityRepository,
                                   ParticipantRepository $participantRepository,
                                   $id
