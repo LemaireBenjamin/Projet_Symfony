@@ -7,40 +7,71 @@
     <h1>Créer une sortie</h1>
 </div>
 <div class="container">
-    <div class="left col-6">
+    <div class="left col-5">
         {{ form_start(form, {'attr': {'id': 'activity_form'}}) }}
         {{ form_row(form.name) }}
-        {{ form_row(form.startDate) }}
-        {{ form_row(form.endDate) }}
-        {{ form_row(form.maxInscriptions) }}
-        {{ form_row(form.duration) }}
-        {{ form_row(form.description) }}
+        {{ form_row(form.startDate, {'label' : 'Date et heure de la sortie : '}) }}
+        {{ form_row(form.endDate, {'label' : 'Date limite d\'inscription : '}) }}
+        <div class="d-flex justify-content-lg-between">
+            <div class="row align-items-center g-3">
+                <div class="col-auto">
+                    {{ form_label(form.maxInscriptions, 'Nombre de places :') }}
+                </div>
+                <div class="col">
+                    {{ form_widget(form.maxInscriptions, {'attr': {'class': 'form-control', 'style': 'width: 150px;'}}) }}
+                </div>
+            </div>
+            <div class="row align-items-center g-3">
+                <div class="col-auto">
+                    {{ form_label(form.duration, 'Durée :') }}
+                </div>
+                <div class="col">
+                    {{ form_widget(form.duration, {'attr': {'class': 'form-control', 'style': 'width: 100px;', 'value':'90'}}) }}
+                </div>
+            </div>
+        </div>
+        {{ form_row(form.description, {'label' : 'Description et infos : ', 'attr': {'style': 'height: 255px;'}}) }}
     </div>
-    <div class="right">
-        {{ form_row(form.site) }}
+    <div class="right col-4">
+        {{ form_row(form.site, {'label' : 'Campus : '}) }}
         {{ form_row(form.cities) }}
         {{ form_row(form.places) }}
+        {{ form_row(form.placeId, {'attr': {'style': 'display: none;'}}) }}
         {{ form_row(form.placeStreet) }}
-        {{ form_row(form.submit) }}
+        {{ form_row(form.zipCode, {'attr': {'readonly': 'readonly'}}) }}
+        {{ form_row(form.latitude) }}
+        {{ form_row(form.longitude) }}
+            <div class="submit">
+                {{ form_row(form.submit) }}
+                <a href="{{ path('app_activity_index') }}">Retour aux activités</a>
+            </div>
         {{ form_end(form) }}
     </div>
 </div>
 
 
-
+    
     <a href="{{ path('app_activity_index') }}"/>Retour aux activités</div>
+
 {% endblock %}
 
 {% block javascripts %}
     <script>
+
+
         window.onload = () => {
             let city = document.querySelector("#activity_cities");
             let placeSelect = document.querySelector("#activity_places");
             let rueInput = document.querySelector("#activity_placeStreet");
+            let zipCodeInput = document.querySelector("#activity_zipCode");
+            let latitudeInput = document.querySelector("#activity_latitude");
+            let longitudeInput = document.querySelector("#activity_longitude");
+
 
             city.addEventListener("change", function () {
                 let form = document.querySelector("#activity_form");
                 let data = this.name + "=" + this.value;
+                let cityId = city.value;
 
                 fetch(form.action, {
                     method: form.getAttribute("method"),
@@ -53,21 +84,54 @@
                 .then(html => {
                     let content = document.createElement('html');
                     content.innerHTML = html;
-                    let nouveauPlaceSelect = content.querySelector("#activity_places");
-                    placeSelect.replaceWith(nouveauPlaceSelect);
-                    placeSelect = nouveauPlaceSelect;
+                    let newPlaceSelect = content.querySelector("#activity_places");
+                    placeSelect.replaceWith(newPlaceSelect);
+                    placeSelect = newPlaceSelect;
+
+                    fetch('get-zipcode/' + cityId)
+                        .then(response => response.text())
+                        .then(zipCode => {
+                            zipCodeInput.value = zipCode; // Set the value of rueInput
+                        });
 
                     // Add change event listener to the new select element
                     placeSelect.addEventListener("change", function () {
                         let selectedOption = this.options[this.selectedIndex];
                         let placeId = selectedOption.value;
 
+                        let placeIdInput = document.querySelector("#activity_placeId");
+                        placeIdInput.value = placeId;
                         // Make a request to retrieve the placeStreet based on the selected placeId
                         fetch('get-place-street/' + placeId)
                             .then(response => response.text())
                             .then(placeStreet => {
                                 rueInput.value = placeStreet; // Set the value of rueInput
-                            });
+
+                                let address = placeStreet;
+                                let encodedAddress = address.replace(/ /g, '+');
+                                console.log(encodedAddress);
+                                let postcode = zipCodeInput.value;
+                                // Utilise une requête HTTP appropriée pour appeler l'API de géocodage avec l'adresse
+                                fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodedAddress}&postcode=${postcode}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.features && data.features.length > 0) {
+                                            const feature = data.features[0];
+                                            if (feature.geometry && feature.geometry.coordinates) {
+                                                const coordinates = feature.geometry.coordinates;
+                                                const latitude = coordinates[1];
+                                                const longitude = coordinates[0];
+                                                console.log(latitude);
+                                                console.log(longitude);
+                                                latitudeInput.value = latitude;
+                                                longitudeInput.value = longitude;
+                                            }
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.log("Une erreur s'est produite lors de l'appel à l'API de géocodage :", error);
+                                });
+                        });
                     });
                 });
             });
