@@ -13,12 +13,14 @@ use App\Repository\CityRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\StatusRepository;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 #[Route('/activity')]
 class ActivityController extends AbstractController
@@ -70,18 +72,23 @@ class ActivityController extends AbstractController
     {
         $activity = new Activity();
 
-        $participant = $participantRepository->find($this->getUser()->getId());
+        $participant = $participantRepository->findParticipantByUserId($this->getUser()->getId());
         $cities = $cityRepository->findAll();
-        $site = $participant->getSite();
-        $places = $placeRepository->findAll();
+        $site = $participant[0]->getSite();
+
+
+        $activity->setSite($site);
+
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
-//        dd($cities);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $status = $statusRepository->find(1);
-            $activity->setOrganizer($participant);
-            $activity->setSite($site);
+            $placeId = $form->getData();
+            dd($placeId);
+            $activity->setPlace($placeId);
+            $activity->setOrganizer($participant[0]);
             $activity->setStatus($status);
 
             $activityRepository->save($activity, true);
@@ -97,10 +104,6 @@ class ActivityController extends AbstractController
         ]);
     }
 
-
-
-
-
     #[Route('/get-place-street/{placeId}', name: 'get_place_street', methods: ['GET', 'POST'])]
     public function getPlaceStreet(PlaceRepository $placeRepository, $placeId): Response
     {
@@ -110,6 +113,14 @@ class ActivityController extends AbstractController
         return new Response($placeStreet);
     }
 
+    #[Route('/get-zipcode/{cityId}', name: 'get_zipcode', methods: ['GET', 'POST'])]
+    public function getZipCode(Request $request, CityRepository $cityRepository, $cityId): Response
+    {
+        $city = $cityRepository->find($cityId);
+        $zipCode = $city ? $city->getZipCode() : '';
+
+        return new Response($zipCode);
+    }
 
 
    #[Route('/{id}', name: 'app_activity_show', methods: ['GET','POST'])]

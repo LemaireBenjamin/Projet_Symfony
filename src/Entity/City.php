@@ -63,7 +63,7 @@ class City
         return $this;
     }
 
-    public function getZipcode(): ?string
+    public function getZipCode(): ?string
     {
         return $this->zipcode;
     }

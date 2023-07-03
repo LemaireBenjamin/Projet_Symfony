@@ -12,6 +12,10 @@ h1 {
     justify-content: center;
 }
 
+.header_h1 {
+    color:darkgrey;
+}
+
 .div_button {
     display: flex;
     justify-content: center;
@@ -79,4 +83,15 @@ h1 {
     display: flex;
     flex-direction: column;
     margin-left: 2em;
+}
+
+.submit {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.submit a {
+    text-decoration: none;
 }

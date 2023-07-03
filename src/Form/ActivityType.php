@@ -8,8 +8,8 @@ use App\Entity\Place;
 use App\Entity\Site;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -24,6 +24,8 @@ class ActivityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        date_default_timezone_set('Europe/Paris');
+
         $builder
             ->add('name',TextType::class, [
                 'label' => 'Nom de la sortie :'])
@@ -38,25 +40,54 @@ class ActivityType extends AbstractType
                 'class' => City::class,
                 'choice_label' => 'cityName',
                 'placeholder' => 'Sélectionnez un ville',
-                'label' => 'Ville'
+                'label' => 'Ville :'
             ])
 
             ->add('places', ChoiceType::class, [
                 'mapped'=> false,
+                'disabled' => false,
+                'label' => 'Lieu :'
+            ])
+
+            ->add('placeId', ChoiceType::class, [
+                'mapped'=> false,
                 'disabled' => true,
-                'label' => 'Lieu'
             ])
 
             ->add('placeStreet', TextType::class, [
                 'mapped'=> false,
                 'attr' => ['id' => 'activity_placeStreet'],
+                'label' => 'Rue :'
             ])
 
+            ->add('zipCode', TextType::class, [
+                'mapped'=> false,
+                'label' => 'Code postal :'
+            ])
+
+            ->add('latitude', TextType::class, [
+                'mapped'=> false,
+                'label' => 'Latitude :'
+            ])
+
+            ->add('longitude', TextType::class, [
+                'mapped'=> false,
+                'label' => 'Longitude :'
+            ])
+
+
             ->add('startDate', DateTimeType::class, [
+                'label' => 'Date de la sortie :',
                 'widget' => 'single_text',
+                'html5' => true,
+                'attr' => [
+                    'class' => 'datetimepicker', // Ajouter une classe CSS pour cibler le champ avec JavaScript
+                ],
+//                'format' => 'yyyy-MM-dd HH:mm',
                 'data' => new \DateTime(),
                 'by_reference' => true,
             ])
+
             ->add('duration')
             ->add('endDate', DateTimeType::class, [
                 'widget' => 'single_text',
@@ -64,7 +95,7 @@ class ActivityType extends AbstractType
                 'by_reference' => true,
             ])
             ->add('maxInscriptions')
-            ->add('description')
+            ->add('description', TextareaType::class)
 //            ->add('pictureUrl', FileType::class, [
 //                'label' => 'Image',
 //                'required' => false,
@@ -82,7 +113,7 @@ class ActivityType extends AbstractType
                     'choices' => $places,
                     'choice_label' => 'placeName',
                     'placeholder' => 'Choisir un lieu',
-                    'label' => 'Lieu'
+                    'label' => 'Lieu',
             ]);
         };
 
@@ -105,6 +136,7 @@ class ActivityType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Activity::class,
+//            'attr' => ['id' => 'activity_form'],
         ]);
     }
 }
