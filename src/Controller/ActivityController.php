@@ -70,9 +70,11 @@ class ActivityController extends AbstractController
     {
         $activity = new Activity();
 
-        $participant = $participantRepository->find($this->getUser()->getId());
+        $participant = $participantRepository
+            ->findParticipantByUserId($this->getUser()->getId());
+
         $cities = $cityRepository->findAll();
-        $site = $participant->getSite();
+        $site = $participant[0]->getSite();
         $places = $placeRepository->findAll();
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
@@ -197,16 +199,6 @@ class ActivityController extends AbstractController
         return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    //Show activities others participants
-    #[Route('/activity/otherParticipant', name:'app_participant_other_activity')]
-    public function otherParticipantShow(ActivityRepository $activityRepository){
-        $currentParticipant=$this->getUser();
-        $otherParticipantActivities=$this->$activityRepository->findBy([
-                'participant'=>$currentParticipant
-            ]);
-        return $this->render('activity/otherParticipantShow.html.twig',
-            ['otherParticipantActivities'=>$otherParticipantActivities]);
-    }
 
 
 }

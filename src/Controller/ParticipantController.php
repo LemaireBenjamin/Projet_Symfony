@@ -6,6 +6,7 @@ use App\Entity\Participant;
 use App\Entity\Activity;
 use App\Entity\Site;
 use App\Form\ParticipantType;
+use App\Repository\ActivityRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SiteRepository;
 use App\Repository\UserRepository;
@@ -56,10 +57,12 @@ class ParticipantController extends AbstractController
     #[Route('/{id}', name: 'app_participant_show', methods: ['GET'])]
     public function show(Participant $participant): Response
     {
+
         return $this->render('participant/show.html.twig', [
             'participant' => $participant,
         ]);
     }
+
 
     #[Route('/{id}/edit', name: 'app_participant_edit', methods: ['GET', 'POST'])]
     public function edit(
