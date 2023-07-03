@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des sorties{% endblock %}
+
+{% block body %}
+    {% for activity in otherParticipantActivities %}
+        <div>
+            <p>Participant: {{ activity.participant.username }}</p>
+            <p>Activity: {{ activity.activityName }}</p>
+            <p>Date: {{ activity.date|date('Y-m-d H:i:s') }}</p>
+        </div>
+
+        <!-- Affichez les autres informations de la sortie -->
+{#
+        <ul>
+            {% for participant in activity.participants %}
+                <li>
+                    <a href="{{ path('participant_profile', { 'id': participant.id }) }}">{{ participant.nom }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+#}
+
+    {% endfor %}
+
+
+{% endblock %}

@@ -22,19 +22,19 @@ h1 {
     text-decoration: none;
 }
 
-.titre {
+.accueil {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-top: 2em;
 }
 
-.left {
+.accueil-left {
     display: flex;
     align-items: center;
 }
 
-.right {
+.accueil-right {
     display: flex;
     flex-direction: column;
 }
@@ -60,5 +60,23 @@ h1 {
 }
 
 .table {
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 19px 38px, rgba(0, 0, 0, 0.22) 0 15px 12px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    margin-right: 2em;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2em;
 }

@@ -139,7 +139,7 @@ class Participant
     {
         if (!$this->activities->contains($activity)) {
             $this->activities->add($activity);
-            $activity->setOrganizer($this);
+//            $activity->setOrganizer($this);
         }
 
         return $this;
@@ -147,11 +147,12 @@ class Participant
 
     public function removeActivity(Activity $activity): static
     {
-        if ($this->activities->removeElement($activity)) {
+        if ($this->activities->contains($activity)) {
+            $this->activities->removeElement($activity);
             // set the owning side to null (unless already changed)
-            if ($activity->getOrganizer() === $this) {
-                $activity->setOrganizer(null);
-            }
+//            if ($activity->getOrganizer() === $this) {
+//                $activity->setOrganizer(null);
+//            }
         }
 
         return $this;

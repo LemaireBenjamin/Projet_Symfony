@@ -16,7 +16,7 @@
                 {% endif %}
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_main') }}">Accueil</a>
+                    <a class="nav-link" href="{{ path('app_activity_index') }}">Accueil</a>
                 </li>
 
                 {% if app.user %}
@@ -28,6 +28,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
                     </li>
+
                 {% else %}
 
                     <li class="nav-item">

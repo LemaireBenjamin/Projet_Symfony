@@ -120,6 +120,7 @@ class ParticipantController extends AbstractController
         ]);
     }
 
+
     #[Route('/{id}', name: 'app_participant_delete', methods: ['POST'])]
     public function delete(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
     {

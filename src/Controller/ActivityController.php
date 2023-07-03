@@ -3,15 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Activity;
+use App\Entity\Place;
 use App\Entity\Site;
 use App\Entity\Status;
-use App\Entity\User;
 use App\Form\ActivityFilterType;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
+use App\Repository\CityRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\PlaceRepository;
-use App\Repository\SiteRepository;
 use App\Repository\StatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -66,17 +66,17 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/new', name: 'app_activity_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, PlaceRepository $placeRepository, ParticipantRepository $participantRepository, StatusRepository $statusRepository, ActivityRepository $activityRepository): Response
+    public function new(Request $request, CityRepository $cityRepository, PlaceRepository $placeRepository, ParticipantRepository $participantRepository, StatusRepository $statusRepository, ActivityRepository $activityRepository): Response
     {
         $activity = new Activity();
 
         $participant = $participantRepository->find($this->getUser()->getId());
-
+        $cities = $cityRepository->findAll();
         $site = $participant->getSite();
         $places = $placeRepository->findAll();
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
-//        var_dump($form);
+//        dd($cities);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $status = $statusRepository->find(1);
@@ -91,14 +91,58 @@ class ActivityController extends AbstractController
 
         return $this->render('activity/new.html.twig', [
             'activity' => $activity,
-            'places' => $places,
+//            'cities' => $cities,
+//            'places' => $places,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_activity_show', methods: ['GET'])]
-    public function show(Activity $activity, Status $status): Response
+
+
+
+
+    #[Route('/get-place-street/{placeId}', name: 'get_place_street', methods: ['GET', 'POST'])]
+    public function getPlaceStreet(PlaceRepository $placeRepository, $placeId): Response
     {
+        $place = $placeRepository->find($placeId);
+        $placeStreet = $place ? $place->getPlaceStreet() : '';
+
+        return new Response($placeStreet);
+    }
+
+
+
+   #[Route('/{id}', name: 'app_activity_show', methods: ['GET','POST'])]
+   public function show(
+       Request $request,
+       Activity $activity,
+       ActivityRepository $activityRepository,
+       ParticipantRepository $participantRepository,
+       $id): Response
+    {
+
+        $activity = $activityRepository->find($id);
+        $user = $this->getUser();
+
+        if ($activity->getParticipants()->contains($user)) {
+            throw new \Exception('L\'utilisateur est déjà inscrit à cette activité.');
+        }
+
+        if ($activity->getParticipants()->count() >= $activity->getMaxInscriptions()) {
+            throw new \Exception('Le nombre maximum d\'inscriptions à cette activité a été atteint.');
+        }
+
+        if ($request->isMethod('POST')) {
+
+            $participant = $participantRepository->findParticipantByUserId($user->getId());
+
+            $activity->addParticipant($participant[0]);
+
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_activity_show', ['id' => $activity->getId()]);
+        }
+
         return $this->render('activity/show.html.twig', [
             'activity' => $activity,
         ]);
@@ -128,7 +172,41 @@ class ActivityController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$activity->getId(), $request->request->get('_token'))) {
             $activityRepository->remove($activity, true);
         }
-
         return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/unsubscribe/{id}',name:'app_activity_unsubscribe',methods:['POST'])]
+    public function toUnsubscribe(Request $request,
+                                  Activity $activity,
+                                  ActivityRepository $activityRepository,
+                                  ParticipantRepository $participantRepository,
+                                  $id
+    ): Response
+    {
+        $activity = $activityRepository->find($id);
+        $user = $this->getUser();
+
+        if ($request->isMethod('POST')) {
+
+            $participant = $participantRepository->findParticipantByUserId($user->getId());
+
+            $activity->removeParticipant($participant[0]);
+
+            $this->entityManager->flush();
+        }
+        return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    //Show activities others participants
+    #[Route('/activity/otherParticipant', name:'app_participant_other_activity')]
+    public function otherParticipantShow(ActivityRepository $activityRepository){
+        $currentParticipant=$this->getUser();
+        $otherParticipantActivities=$this->$activityRepository->findBy([
+                'participant'=>$currentParticipant
+            ]);
+        return $this->render('activity/otherParticipantShow.html.twig',
+            ['otherParticipantActivities'=>$otherParticipantActivities]);
+    }
+
+
 }
