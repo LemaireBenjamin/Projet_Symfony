@@ -30,6 +30,16 @@
             </div>
         </main>
 
+        <div class="container">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+
         <footer>
             {{ include('/common/footer.html.twig') }}
         </footer>
