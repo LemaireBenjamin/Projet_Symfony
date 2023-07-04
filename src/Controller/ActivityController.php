@@ -205,4 +205,26 @@ class ActivityController extends AbstractController
         return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/{id}/cancel', name: 'app_activity_cancel', methods: ['GET','POST'])]
+    public function cancel( Request $request,
+                            ActivityRepository $activityRepository,
+                            $id
+    ): Response
+    {
+        $activity = $activityRepository->find($id);
+
+        if ($request->isMethod('POST')) {
+
+//            $activity->addParticipant($participant[0]);
+//
+//            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_activity_show', ['id' => $activity->getId()]);
+        }
+
+        return $this->render('activity/cancel_activity.html.twig', [
+            'activity' => $activity,
+        ]);
+    }
+
 }

@@ -94,9 +94,26 @@
                     {% for participant in activity.participants %}
                         <tr>
                             <td>{{ participant.user.username }}</td>
-                            <td>{{ participant.firstname }}  {{ participant.firstname|upper }}</td>
+                            <td>
+                                {% if participant.id != app.user.participant.id %}
+
+                                    <a href="{{ path('app_participant_show',{'id': participant.id}) }}" >
+                                        {{ participant.firstname }}  {{ participant.firstname|upper }}
+                                    </a>
+
+                                {% else %}
+
+                                    <a href="{{ path('app_participant_edit',{'id': app.user.participant.id}) }}" >
+                                        {{ participant.firstname }}  {{ participant.firstname|upper }}
+                                    </a>
+
+                                {% endif %}
+                            </td>
+
                         </tr>
+
                     {%  endfor %}
+
                     </tbody>
                 </table>
             </div>

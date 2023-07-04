@@ -103,18 +103,25 @@
 
                             {% if activity.status.statusLabel is same as ("Ouverte")  %}
 
+                                {% if activity.organizer.id != currentUser.participant.id  %}
 
-                                {% if activity.participants|filter(participant => participant.user.username ==userUsername)|length > 0 %}
+                                    {% if activity.participants|filter(participant => participant.user.username ==userUsername)|length > 0 %}
 
-                                    <form action="{{ path('app_activity_unsubscribe', {'id': activity.id}) }}" method="post">
-                                        <button type="submit">Se désister</button>
-                                    </form>
+                                        <form action="{{ path('app_activity_unsubscribe', {'id': activity.id}) }}" method="post">
+                                            <button type="submit">Se désister</button>
+                                        </form>
+
+                                    {% else %}
+
+                                        <form action="{{ path('app_activity_show', {'id': activity.id}) }}" method="post">
+                                            <button type="submit">S'inscrire</button>
+                                        </form>
+
+                                    {% endif %}
 
                                 {% else %}
 
-                                    <form action="{{ path('app_activity_show', {'id': activity.id}) }}" method="post">
-                                        <button type="submit">S'inscrire</button>
-                                    </form>
+                                    <a href="{{ path('app_activity_cancel',{'id': activity.id}) }}">Annuler</a>
 
                                 {% endif %}
 
