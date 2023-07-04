@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Activity;
-use App\Entity\Place;
 use App\Entity\Site;
-use App\Entity\Status;
 use App\Form\ActivityFilterType;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
@@ -13,12 +11,14 @@ use App\Repository\CityRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\StatusRepository;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 #[Route('/activity')]
 class ActivityController extends AbstractController
@@ -34,7 +34,6 @@ class ActivityController extends AbstractController
     public function index(Request $request,ActivityRepository $activityRepository, Security $security): Response
     {
         $activities = $activityRepository->findAll();
-//        dd($activities);
         $currentUser = $security->getUser();
 
         $sites = $this->entityManager->getRepository(Site::class)->findAll();
@@ -70,20 +69,32 @@ class ActivityController extends AbstractController
     {
         $activity = new Activity();
 
+<<<<<<< HEAD
         $participant = $participantRepository
             ->findParticipantByUserId($this->getUser()->getId());
 
         $cities = $cityRepository->findAll();
         $site = $participant[0]->getSite();
         $places = $placeRepository->findAll();
+=======
+        $participant = $participantRepository->findParticipantByUserId($this->getUser()->getId());
+        $cities = $cityRepository->findAll();
+        $site = $participant[0]->getSite();
+
+
+        $activity->setSite($site);
+
+>>>>>>> 80b8ac2a9b56050ad87a6b8c06e16ac8a6a85ec3
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
-//        dd($cities);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $status = $statusRepository->find(1);
-            $activity->setOrganizer($participant);
-            $activity->setSite($site);
+            $placeId = $form->getData();
+            dd($placeId);
+            $activity->setPlace($placeId);
+            $activity->setOrganizer($participant[0]);
             $activity->setStatus($status);
 
             $activityRepository->save($activity, true);
@@ -99,10 +110,6 @@ class ActivityController extends AbstractController
         ]);
     }
 
-
-
-
-
     #[Route('/get-place-street/{placeId}', name: 'get_place_street', methods: ['GET', 'POST'])]
     public function getPlaceStreet(PlaceRepository $placeRepository, $placeId): Response
     {
@@ -112,12 +119,19 @@ class ActivityController extends AbstractController
         return new Response($placeStreet);
     }
 
+    #[Route('/get-zipcode/{cityId}', name: 'get_zipcode', methods: ['GET', 'POST'])]
+    public function getZipCode(Request $request, CityRepository $cityRepository, $cityId): Response
+    {
+        $city = $cityRepository->find($cityId);
+        $zipCode = $city ? $city->getZipCode() : '';
+
+        return new Response($zipCode);
+    }
 
 
    #[Route('/{id}', name: 'app_activity_show', methods: ['GET','POST'])]
    public function show(
        Request $request,
-       Activity $activity,
        ActivityRepository $activityRepository,
        ParticipantRepository $participantRepository,
        $id): Response
@@ -179,7 +193,6 @@ class ActivityController extends AbstractController
 
     #[Route('/unsubscribe/{id}',name:'app_activity_unsubscribe',methods:['POST'])]
     public function toUnsubscribe(Request $request,
-                                  Activity $activity,
                                   ActivityRepository $activityRepository,
                                   ParticipantRepository $participantRepository,
                                   $id

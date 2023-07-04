@@ -55,9 +55,16 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_participant_show', methods: ['GET'])]
-    public function show(Participant $participant): Response
+    public function show($id,
+                         Participant $participant,
+                         UserRepository $userRepository): Response
     {
+<<<<<<< HEAD
 
+=======
+        $user = $userRepository->findByParticipantId($id);
+        dd($user);
+>>>>>>> 80b8ac2a9b56050ad87a6b8c06e16ac8a6a85ec3
         return $this->render('participant/show.html.twig', [
             'participant' => $participant,
         ]);
@@ -108,8 +115,6 @@ class ParticipantController extends AbstractController
                 return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
 
             } catch (\Exception $e) {
-
-
 
                 $errorMessage = 'Une erreur s\'est produite lors de la mise à jour de l\'utilisateur : ' . $e->getMessage();
 
