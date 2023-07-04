@@ -4,10 +4,10 @@
 
 {% block body %}
 
-
-    {% set userUsername = app.user.username%}
-    {% set userFirstname = app.user.participant.firstname %}
-    {% set userName = app.user.participant.lastname|first|capitalize  %}
+    {% set currentUser = app.user %}
+    {% set userUsername = currentUser.username%}
+    {% set userFirstname = currentUser.participant.firstname %}
+    {% set userName = currentUser.participant.lastname|first|capitalize  %}
 
 
     <div class="accueil">
@@ -63,7 +63,7 @@
         {% for activity in activities %}
 
             {% if not activity.status.statusLabel is same as ("Créée")
-                or  activity.organizer.id == app.user.participant.id %}
+                or  activity.organizer.id == currentUser.participant.id %}
 
                 <tr>
                     <td>{{ activity.name }}</td>
@@ -73,13 +73,22 @@
                     <td>{{ activity.status.statusLabel}}</td>
                     <td>
 
-                        {% if activity.participants|filter(participant => participant.user.username == app.user.username)|length > 0 %}
+                        {% if activity.participants|filter(participant => participant.user.username == userUsername)|length > 0 %}
                             <p class="text-center">X</p>
                         {% endif %}
                     </td>
 
                     <td>
-                        <a href="{{ path('app_participant_show',{'id': activity.organizer.id}) }}" >{{ activity.organizer.firstname }} {{ activity.organizer.lastname }}</a>
+
+                        {% if activity.organizer.id != currentUser.participant.id %}
+
+                            <a href="{{ path('app_participant_show',{'id': activity.organizer.id}) }}" >{{ activity.organizer.firstname }} {{ activity.organizer.lastname }}</a>
+
+                        {% else %}
+
+                            <a href="{{ path('app_participant_edit',{'id': currentUser.participant.id}) }}" >{{ activity.organizer.firstname }} {{ activity.organizer.lastname }}</a>
+
+                        {% endif %}
                     </td>
 
                     <td>
@@ -95,7 +104,7 @@
                             {% if activity.status.statusLabel is same as ("Ouverte")  %}
 
 
-                                {% if activity.participants|filter(participant => participant.user.username == app.user.username)|length > 0 %}
+                                {% if activity.participants|filter(participant => participant.user.username ==userUsername)|length > 0 %}
 
                                     <form action="{{ path('app_activity_unsubscribe', {'id': activity.id}) }}" method="post">
                                         <button type="submit">Se désister</button>

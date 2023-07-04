@@ -10,138 +10,86 @@
             <h1>Afficher une sortie</h1>
         </div>
 
-        <div class="d-flex justify-content-center text">
+        <div class="d-flex justify-content-center fs-5 text-center">
 
             <div class="row row-cols m-2">
 
                 <div class="m-2 p-2">
-                    <label>Nom de la sortie</label>
-                    <label>{{ activity.name }}</label>
+                    <label class="me-3">Nom de la sortie :</label>
+                    <label class="fw-medium">{{ activity.name }}</label>
                 </div>
 
                 <div class="m-2 p-2">
-                    <label>Date et heure de la sortie</label>
-                    <label>{{ activity.startDate ? activity.startDate|date('Y-m-d H:i') : '' }}</label>
+                    <label class="me-3">Date et heure de la sortie :</label>
+                    <label class="fw-medium">{{ activity.startDate ? activity.startDate|date('Y-m-d H:i') : '' }}</label>
                 </div>
 
                 <div class="m-2 p-2">
-                    <label>Date limite d'inscription</label>
-                    <label>{{ activity.endDate ? activity.endDate|date('Y-m-d H:i') : '' }}</label>
-                </div>
-
-
-                <div class="m-2 p-2">
-                    <label>Nombre de places</label>
-                    <label>{{ activity.maxInscriptions }}</label>
+                    <label class="me-3">Date limite d'inscription :</label>
+                    <label class="fw-medium">{{ activity.endDate ? activity.endDate|date('Y-m-d H:i') : '' }}</label>
                 </div>
 
 
                 <div class="m-2 p-2">
-                    <label>Durée</label>
-                    <label>{{ activity.duration }} minutes</label>
+                    <label class="me-3">Nombre de places :</label>
+                    <label class="fw-medium">{{ activity.maxInscriptions }}</label>
+                </div>
+
+
+                <div class="m-2 p-2">
+                    <label class="me-3">Durée :</label>
+                    <label class="fw-medium">{{ activity.duration }} minutes</label>
                 </div>
 
                 <div class="m-2 p-2">
-                    <label>Description et infos</label>
-                    <label>{{ activity.description }}</label>
+                    <label class="me-3">Description et infos :</label>
+                    <label class="fw-medium">{{ activity.description }}</label>
                 </div>
             </div>
 
             <div class="row row-cols">
 
                 <div class="m-2 p-2">
-                    <label>Lieu</label>
-                    <label>{{ activity.place.placeName }}</label>
+                    <label class="me-3">Lieu :</label>
+                    <label class="fw-medium">{{ activity.place.placeName }}</label>
                 </div>
 
                 <div class="m-2 p-2">
-                    <label>Rue</label>
-                    <label>{{ activity.place.placeStreet }}</label>
+                    <label class="me-3">Rue :</label>
+                    <label class="fw-medium">{{ activity.place.placeStreet }}</label>
                 </div>
 
                 <div class="m-2 p-2">
-                    <label>Ville</label>
-                    <label>{{ activity.place.city.cityName }}</label>
+                    <label class="me-3">Ville :</label>
+                    <label class="fw-medium">{{ activity.place.city.cityName }}</label>
                 </div>
 
                 <div class="m-2 p-2">
-                    <label>Code postal</label>
-                    <label>{{ activity.place.city.cityName }}</label>
+                    <label class="me-3">Code postal :</label>
+                    <label class="fw-medium">{{ activity.place.city.cityName }}</label>
                 </div>
 
                 <div class="m-2 p-2">
-                    <label>Ville</label>
-                    <label>{{ activity.place.city.zipcode }}</label>
+                    <label class="me-3">Ville :</label>
+                    <label class="fw-medium">{{ activity.place.city.zipcode }}</label>
                 </div>
 
                 <div class="m-2 p-2">
-                    <label>Latitude</label>
-                    <label>{{ activity.place.latitude }}</label>
+                    <label class="me-3">Latitude :</label>
+                    <label class="fw-medium">{{ activity.place.latitude }}</label>
                 </div>
 
                 <div class="m-2 p-2">
-                    <label>Longitude</label>
-                    <label>{{ activity.place.longitude }}</label>
+                    <label class="me-3">Longitude :</label>
+                    <label class="fw-medium">{{ activity.place.longitude }}</label>
                 </div>
 
             </div>
 
         </div>
-
-
-{#        <table class="table">#}
-{#            <tbody>#}
-{#            <tr>#}
-{#                <th>Nom de la sortie</th>#}
-{#                <td>{{ activity.name }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Date et heure de la sortie</th>#}
-{#                <td>{{ activity.startDate ? activity.startDate|date('Y-m-d H:i') : '' }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Date limite d'inscription</th>#}
-{#                <td>{{ activity.endDate ? activity.endDate|date('Y-m-d H:i') : '' }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Nombres de places</th>#}
-{#                <td>{{ activity.maxInscriptions }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Durée</th>#}
-{#                <td>{{ activity.duration }} minutes</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Description et infos</th>#}
-{#                <td>{{ activity.description }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Lieu</th>#}
-{#                <td>{{ activity.place.placeName }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Rue</th>#}
-{#                <td>{{ activity.place.placeStreet }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Ville</th>#}
-{#                <td>{{ activity.place.city.cityName }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Code Postal</th>#}
-{#                <td>{{ activity.place.city.zipcode }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Latitude</th>#}
-{#                <td>{{ activity.place.latitude }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Longitude</th>#}
-{#                <td>{{ activity.place.longitude }}</td>#}
-{#            </tr>#}
-{#            </tbody>#}
-{#        </table>#}
     </div>
+
+        {# Partie tableau des participants à l'activité #}
 
     <div>
         <div>
@@ -157,12 +105,24 @@
                     </tr>
                 </thead>
                 <tbody>
+
+
                 {% for participant in activity.participants %}
 
                     <tr>
                         <td>{{ participant.user.username }}</td>
 
-                        <td>{{ participant.firstname }}  {{ participant.firstname|upper }}</td>
+                        <td>
+                            {% if participant.id != app.user.participant.id %}
+
+                                <a href="{{ path('app_participant_show',{'id': participant.id}) }}">{{ participant.firstname }}  {{ participant.firstname|upper }}</a>
+
+                             {% else %}
+
+                                <a href="{{ path('app_participant_edit',{'id': app.user.participant.id}) }}">{{ participant.firstname }}  {{ participant.firstname|upper }}</a>
+
+                             {% endif %}
+                        </td>
                     </tr>
                 {%  endfor %}
                 </tbody>
