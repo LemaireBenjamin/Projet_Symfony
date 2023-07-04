@@ -2,24 +2,56 @@
 
 namespace App\Controller\Admin;
 
+
 use App\Entity\City;
 use App\Entity\Participant;
 use App\Entity\Place;
 use App\Entity\Site;
 use App\Entity\Status;
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+//use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle;
+//use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 class DashboardController extends AbstractDashboardController
+
 {
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator){}
+
+//    public function __construct(
+//        private ChartBuilderInterface $chartBuilder,
+//    ) {
+//    }
+//    #[Route('/adminChart', name: 'adminChart')]
+//    public function admin(): Response
+//    {
+//        $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
+//        // ...set chart data and options somehow
+//
+//        return $this->render('admin/dashboard.html.twig', [
+//            'chart' => $chart,
+//        ]);
+//    }
+
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        return parent::index();
+        $url = $this->adminUrlGenerator
+            ->setController(  ParticipantCrudController::class)
+            ->generateUrl();
+
+        return $this->redirect($url);
+    }
+
+        //return parent::index();
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
@@ -36,7 +68,7 @@ class DashboardController extends AbstractDashboardController
         // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
         //
         // return $this->render('some/path/my-dashboard.html.twig');
-    }
+  //}
 
     public function configureDashboard(): Dashboard
     {
@@ -46,20 +78,22 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-//        return [
+//       return [
+
 //            MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
 //
-//            MenuItem::section('Blog'),
-//            MenuItem::section('Users'),
-//            MenuItem::linkToUrl('Visit public website', null, '/'),
-//
+//            MenuItem::section('Participant'),
+//            MenuItem::section('Users')
 //        ];
+
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Users', 'fa fa-user', User::class);
         yield MenuItem::linkToCrud('Participant', 'fa fa-user', Participant::class);
         yield MenuItem::linkToCrud('Site', 'fa fa-user', Site::class);
-        yield MenuItem::linkToCrud('City', 'fa fa-user', City::class);
-        yield MenuItem::linkToCrud('Status', 'fa fa-user', Status::class);
-        yield MenuItem::linkToCrud('Place', 'fa fa-user', Place::class);
+        yield MenuItem::linkToCrud('City', 'fa fa-city', City::class);
+        yield MenuItem::linkToCrud('Status', 'fa-solid fa-greater-than', Status::class);
+        yield MenuItem::linkToCrud('Place', 'fa fa-location-dot', Place::class);
+
+
     }
 }
