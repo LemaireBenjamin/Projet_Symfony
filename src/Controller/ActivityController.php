@@ -69,14 +69,13 @@ class ActivityController extends AbstractController
     {
         $activity = new Activity();
 
-<<<<<<< HEAD
         $participant = $participantRepository
             ->findParticipantByUserId($this->getUser()->getId());
 
         $cities = $cityRepository->findAll();
         $site = $participant[0]->getSite();
         $places = $placeRepository->findAll();
-=======
+
         $participant = $participantRepository->findParticipantByUserId($this->getUser()->getId());
         $cities = $cityRepository->findAll();
         $site = $participant[0]->getSite();
@@ -84,7 +83,7 @@ class ActivityController extends AbstractController
 
         $activity->setSite($site);
 
->>>>>>> 80b8ac2a9b56050ad87a6b8c06e16ac8a6a85ec3
+
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
 
