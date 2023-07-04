@@ -93,9 +93,13 @@ class ActivityRepository extends ServiceEntityRepository
         }
 
         if ($isPast) {
-            $queryBuilder->andWhere('a.startDate < :currentDate')
-                ->setParameter('currentDate', new \DateTime());
+            $statusIds = [3, 5]; // Liste des IDs de statut à inclure
+            $queryBuilder->andWhere('a.status IN (:statusIds)')
+                ->setParameter('statusIds', $statusIds);
         }
+//            $queryBuilder->andWhere('a.startDate < :currentDate')
+//                ->setParameter('currentDate', new \DateTime());
+//        }
 
         return $queryBuilder->getQuery()->getResult();
     }

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Place;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -54,7 +55,10 @@ class PlaceRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Place
+//    /**
+//     * @throws NonUniqueResultException
+//     */
+//    public function findOneByName($value): ?Place
 //    {
 //        return $this->createQueryBuilder('p')
 //            ->andWhere('p.exampleField = :val')
