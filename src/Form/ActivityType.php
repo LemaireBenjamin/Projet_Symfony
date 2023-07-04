@@ -8,6 +8,7 @@ use App\Entity\Place;
 use App\Entity\Site;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,6 +26,8 @@ class ActivityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         date_default_timezone_set('Europe/Paris');
+        $defaultEndDate = new \DateTime();
+        $defaultEndDate->modify('+7 days');
 
         $builder
             ->add('name',TextType::class, [
@@ -49,9 +52,12 @@ class ActivityType extends AbstractType
                 'label' => 'Lieu :'
             ])
 
-            ->add('placeId', ChoiceType::class, [
+            ->add('placeId', HiddenType::class, [
                 'mapped'=> false,
                 'disabled' => true,
+                'attr' => [
+                    'hidden' => true,
+                ],
             ])
 
             ->add('placeStreet', TextType::class, [
@@ -75,15 +81,9 @@ class ActivityType extends AbstractType
                 'label' => 'Longitude :'
             ])
 
-
             ->add('startDate', DateTimeType::class, [
                 'label' => 'Date de la sortie :',
                 'widget' => 'single_text',
-                'html5' => true,
-                'attr' => [
-                    'class' => 'datetimepicker', // Ajouter une classe CSS pour cibler le champ avec JavaScript
-                ],
-//                'format' => 'yyyy-MM-dd HH:mm',
                 'data' => new \DateTime(),
                 'by_reference' => true,
             ])
@@ -91,8 +91,16 @@ class ActivityType extends AbstractType
             ->add('duration')
             ->add('endDate', DateTimeType::class, [
                 'widget' => 'single_text',
-                'data' => new \DateTime(),
+                'html5' => true,
+                'data' => new \DateTime('+7 days'),
+                'attr' => [
+                    'min' => (new \DateTime('+7 days'))->format('d/m/Y'),
+                ],
                 'by_reference' => true,
+
+//                'widget' => 'single_text',
+//                'data' => $defaultEndDate->format('d/m/Y'),
+//                'by_reference' => true,
             ])
             ->add('maxInscriptions')
             ->add('description', TextareaType::class)

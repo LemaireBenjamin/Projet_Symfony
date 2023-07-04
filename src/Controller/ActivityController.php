@@ -73,18 +73,20 @@ class ActivityController extends AbstractController
         $cities = $cityRepository->findAll();
         $site = $participant[0]->getSite();
 
-
         $activity->setSite($site);
 
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $status = $statusRepository->find(1);
-            $placeId = $form->getData();
-            dd($placeId);
-            $activity->setPlace($placeId);
+            $activityData = $request->get('activity');
+            $placeId = $activityData['placeId'];
+            $place = $placeRepository->find($placeId);
+
+            $activity->setPlace($place);
             $activity->setOrganizer($participant[0]);
             $activity->setStatus($status);
 
