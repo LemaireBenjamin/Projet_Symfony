@@ -108,8 +108,8 @@
                                 {% endif %}
 
                             {% elseif  activity.status.statusLabel is same as ("Créée") %}
-
-                                <a href="{{ path('app_activity_edit', {'id': activity.id}) }}">Modifier</a>
+                                {# A ajouter dans la balise de Modifier pour activer le lien href="{{ path('app_activity_edit', {'id': activity.id}) }}" #}
+                                <a>Modifier</a>
 
                                 <p>Publier</p>
 
