@@ -78,7 +78,9 @@
                         {% endif %}
                     </td>
 
-                    <td>{{ activity.organizer.firstname }} {{ activity.organizer.lastname }}</td>
+                    <td>
+                        <a href="{{ path('app_participant_show',{'id': activity.organizer.id}) }}" >{{ activity.organizer.firstname }} {{ activity.organizer.lastname }}</a>
+                    </td>
 
                     <td>
 
@@ -124,7 +126,7 @@
 {#                <tr>#}
 {#                    <td colspan="10">Pas d'activité trouvée</td>#}
 {#                </tr>#}
-{#                #}
+
                 {% endif %}
 
         {% endfor %}

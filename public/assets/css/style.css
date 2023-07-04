@@ -1,7 +1,3 @@
-body {
-
-
-}
 
 .bg-gradient {
     background-image: var(--bs-gradient);.
@@ -10,6 +6,15 @@ body {
 h1 {
     display: flex;
     justify-content: center;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+h2 {
+    display: flex;
+    justify-content: center;
+    padding-top: 0.5em;
+    padding-bottom: 1em;
 }
 
 .header_h1 {
@@ -94,4 +99,61 @@ h1 {
 
 .submit a {
     text-decoration: none;
+}
+
+.placeForm {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.placeForm-img{
+    display: flex;
+    margin-top: 1em;
+    margin-left: 1em;
+    max-width: 2em;
+}
+
+td .status-created {
+    background-color: yellow;
+}
+
+td .status-open {
+    background-color: green;
+    color: white;
+}
+
+td .status-published {
+    background-color: blue;
+    color: white;
+}
+
+.show label {
+    font-weight: bold;
+}
+
+.show-left {
+    display: flex;
+    flex-direction: row;
+}
+
+.show-right {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.show-left label {
+    font-weight: bold;
+}
+
+.show-right label {
+    font-weight: bold;
+}
+
+.liste-participant {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }

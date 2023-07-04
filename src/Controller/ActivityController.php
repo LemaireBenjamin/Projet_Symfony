@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Activity;
-use App\Entity\Place;
 use App\Entity\Site;
-use App\Entity\Status;
 use App\Form\ActivityFilterType;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
@@ -36,7 +34,6 @@ class ActivityController extends AbstractController
     public function index(Request $request,ActivityRepository $activityRepository, Security $security): Response
     {
         $activities = $activityRepository->findAll();
-//        dd($activities);
         $currentUser = $security->getUser();
 
         $sites = $this->entityManager->getRepository(Site::class)->findAll();
@@ -76,18 +73,20 @@ class ActivityController extends AbstractController
         $cities = $cityRepository->findAll();
         $site = $participant[0]->getSite();
 
-
         $activity->setSite($site);
 
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $status = $statusRepository->find(1);
-            $placeId = $form->getData();
-            dd($placeId);
-            $activity->setPlace($placeId);
+            $activityData = $request->get('activity');
+            $placeId = $activityData['placeId'];
+            $place = $placeRepository->find($placeId);
+
+            $activity->setPlace($place);
             $activity->setOrganizer($participant[0]);
             $activity->setStatus($status);
 
@@ -126,7 +125,6 @@ class ActivityController extends AbstractController
    #[Route('/{id}', name: 'app_activity_show', methods: ['GET','POST'])]
    public function show(
        Request $request,
-       Activity $activity,
        ActivityRepository $activityRepository,
        ParticipantRepository $participantRepository,
        $id): Response
@@ -188,7 +186,6 @@ class ActivityController extends AbstractController
 
     #[Route('/unsubscribe/{id}',name:'app_activity_unsubscribe',methods:['POST'])]
     public function toUnsubscribe(Request $request,
-                                  Activity $activity,
                                   ActivityRepository $activityRepository,
                                   ParticipantRepository $participantRepository,
                                   $id

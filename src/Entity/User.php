@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
@@ -18,9 +19,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank(message: 'Le nom d\'utilisateur est requis')]
+    #[Assert\Length(max: 180, maxMessage: 'Le nom d\'utilisateur ne peut pas dépasser {{ limit }} caractères')]
     private ?string $username = null;
 
     #[ORM\Column(length: 255, unique: true)]
+    #[Assert\NotBlank(message: 'L\'adresse e-mail est requise')]
+    #[Assert\Email(message: 'L\'adresse e-mail n\'est pas valide')]
+    #[Assert\Length(max: 255, maxMessage: 'L\'adresse e-mail ne peut pas dépasser {{ limit }} caractères')]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -30,6 +36,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\Blank(message: 'Le mot de passe est requis')]
+    #[Assert\Length(min: 255, minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères')]
     private ?string $password = null;
 
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]

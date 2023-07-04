@@ -1,23 +1,43 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
 
-    <div>
-        <label for="username">Nom d'utilisateur :</label>
-        <input type="text" id="username" name="username" value="{{ app.user is defined ? app.user.username : ''  }}" />
-    </div>
-    <div>
-        <label for="email">Adresse e-mail :</label>
-        <input type="email" id="email" name="email" value="{{ app.user.email }}" />
-    </div>
-    <div>
-        <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="password" />
-    </div>
-    <div>
-        <label for="confirm_password">Confirmer le mot de passe :</label>
-        <input type="password" id="confirm_password" name="confirm_password" />
+    <div class="form-group">
+        <label for="username" class="col-form-label pb-1">Nom d'utilisateur</label>
+        <input class="form-control" type="text" id="username" name="username" value="{{ app.user is defined ? app.user.username : ''  }}" />
     </div>
 
-<button class="btn">{{ button_label|default('Save') }}</button>
+
+    {{ form_row(form.firstname) }}
+
+    {{ form_row(form.lastname) }}
+
+    {{ form_row(form.phone) }}
+    {% if form. phone.vars.errors|length  %}
+     <div class="alert alert-warning">
+         {{ form_errors(form.phone) }}
+     </div>
+    {% endif %}
+
+
+    <div class="form-group">
+        <label for="email" class="col-form-label pb-1" >Adresse e-mail</label>
+        <input class="form-control" type="email" id="email" name="email" value="{{ app.user.email }}" />
+    </div>
+
+    <div class="form-group">
+        <label for="password" class="col-form-label pb-1" >Mot de passe</label>
+        <input class="form-control" type="password" id="password" name="password" />
+    </div>
+
+    <div class="form-group">
+        <label for="confirm_password" class="col-form-label pb-1">Confirmer le mot de passe</label>
+        <input class="form-control" type="password" id="confirm_password" name="confirm_password" />
+    </div>
+
+    {{ form_row(form.site) }}
+
+
+
+    <button class="btn btn-primary" type="submit">Enregistrer</button>
+    <a class="btn btn-secondary" href="{{ path('app_main') }}" >Annuler</a>
 
 {{ form_end(form) }}
