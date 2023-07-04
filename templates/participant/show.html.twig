@@ -3,47 +3,52 @@
 {% block title %}Participant{% endblock %}
 
 {% block body %}
-    <h1>Participant</h1>
+    {% set userFirstname = app.user.participant.firstname %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ participant.id }}</td>
-            </tr>
-            <tr>
-                <th>Lastname</th>
-                <td>{{ participant.lastname }}</td>
-            </tr>
-            <tr>
-                <th>Firstname</th>
-                <td>{{ participant.firstname }}</td>
-            </tr>
-            <tr>
-                <th>Phone</th>
-                <td>{{ participant.phone }}</td>
-            </tr>
-            <tr>
-                <th>Organiser</th>
-                <td>{{ participant.organiser ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Active</th>
-                <td>{{ participant.active ? 'Yes' : 'No' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row mt-5">
+        <div class="col-md-3">
+           <img src="{{ asset('uploads/photo-profil.png') }}" alt="photo-profil" width="70%">
+        </div>
+        <div class="col-md-9">
+            <h1>{{ userFirstname }}</h1>
+{#            <h1>{{ participant.organizer.firstname }}</h1>#}
+            <table class="table">
+                <tbody>
 
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ participant.lastname }}</td>
+                </tr>
+                <tr>
+                    <th>Prénom</th>
+                    <td>{{ participant.firstname }}</td>
+                </tr>
+                <tr>
+                    <th>Téléphone</th>
+                    <td>{{ participant.phone }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ participant.user.email }}</td>
+                </tr>
+                <tr>
+                    <th>Site de ratachement</th>
+                    <td>{{ participant.getSite().siteName }}</td>
+                </tr>
 
-<div class="input-group mb-3">
-    <div class="input-group-prepend" id="bouton2-texte">
-        <a href="{{ path('app_participant_index') }}">
-            <button class="btn btn-outline-success" type="button">Retour à la liste</button></a>
-        <a href="{{ path('app_participant_edit', {'id': participant.id}) }}">
-            <button class="btn btn-outline-warning" type="button">Modifier</button>
-        </a>
+                </tbody>
+            </table>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend" id="bouton2-texte">
+                <a href="{{ path('app_participant_index') }}">
+                    <button class="btn btn-outline-success" type="button">Retour à la liste</button></a>
+                {#        <a href="{{ path('app_participant_edit', {'id': participant.id}) }}">#}
+                {#            <button class="btn btn-outline-warning" type="button">Modifier</button>#}
+                {#        </a>#}
+            </div>
+            {#    {{ include('participant/_delete_form.html.twig') }}#}
+        </div>
+        </div>
     </div>
-    {{ include('participant/_delete_form.html.twig') }}
-</div>
 
 {% endblock %}

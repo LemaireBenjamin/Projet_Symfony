@@ -61,7 +61,7 @@ class ParticipantController extends AbstractController
     {
 
         $user = $userRepository->findByParticipantId($id);
-        dd($user);
+        //dd($user);
 
         return $this->render('participant/show.html.twig', [
             'participant' => $participant,
