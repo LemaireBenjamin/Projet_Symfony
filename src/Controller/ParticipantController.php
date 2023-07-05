@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/participant')]
 class ParticipantController extends AbstractController
@@ -27,6 +28,7 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/', name: 'app_participant_index', methods: ['GET'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function index(ParticipantRepository $participantRepository): Response
     {
         return $this->render('participant/index.html.twig', [
@@ -35,6 +37,7 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/new', name: 'app_participant_new', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function new(Request $request, ParticipantRepository $participantRepository): Response
     {
         $participant = new Participant();
@@ -54,6 +57,7 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_participant_show', methods: ['GET'])]
+    #[IsGranted("ROLE_USER", message: "Page non trouvée", statusCode: 404)]
     public function show($id,
                          Participant $participant,
                          UserRepository $userRepository,
@@ -69,6 +73,7 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_participant_edit', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_USER", message: "Page non trouvée", statusCode: 404)]
     public function edit(
                          $id,
                          Request $request,
@@ -77,6 +82,7 @@ class ParticipantController extends AbstractController
                          UserRepository $userRepository,
                          UserPasswordHasherInterface $userPasswordHasher): Response
     {
+
         $findUser = $userRepository->findByParticipantId($id);
         $user = $findUser[0];
 
@@ -126,6 +132,7 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_participant_delete', methods: ['POST'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function delete(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$participant->getId(), $request->request->get('_token'))) {
