@@ -30,8 +30,12 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             //Flash
             $this->addFlash('success', 'Inscription Créee avec succès!');
+
+            $user->setRoles(["ROLE_USER"]);
+
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(

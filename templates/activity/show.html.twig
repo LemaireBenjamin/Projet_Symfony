@@ -3,179 +3,123 @@
 {% block title %}Activity{% endblock %}
 
 {% block body %}
+<div>
+    <h1>Afficher une sortie</h1>
+    <div class="d-flex justify-content-center">
+        <div class="justify-content-center m-2 col-3">
 
-    <div>
-
-        <div>
-            <h1>Afficher une sortie</h1>
-        </div>
-
-        <div class="d-flex justify-content-center text">
-
-            <div class="row row-cols m-2">
-
-                <div class="m-2 p-2">
-                    <label>Nom de la sortie</label>
-                    <label>{{ activity.name }}</label>
-                </div>
-
-                <div class="m-2 p-2">
-                    <label>Date et heure de la sortie</label>
-                    <label>{{ activity.startDate ? activity.startDate|date('Y-m-d H:i') : '' }}</label>
-                </div>
-
-                <div class="m-2 p-2">
-                    <label>Date limite d'inscription</label>
-                    <label>{{ activity.endDate ? activity.endDate|date('Y-m-d H:i') : '' }}</label>
-                </div>
-
-
-                <div class="m-2 p-2">
-                    <label>Nombre de places</label>
-                    <label>{{ activity.maxInscriptions }}</label>
-                </div>
-
-
-                <div class="m-2 p-2">
-                    <label>Durée</label>
-                    <label>{{ activity.duration }} minutes</label>
-                </div>
-
-                <div class="m-2 p-2">
-                    <label>Description et infos</label>
-                    <label>{{ activity.description }}</label>
-                </div>
+            <div class="show-left">
+                <label>Nom de la sortie :&nbsp;</label>
+                <p>{{ activity.name }}</p>
             </div>
 
-            <div class="row row-cols">
+            <div class="show-left">
+                <label>Date et heure de la sortie :&nbsp;</label>
+                <p> {{ activity.startDate ? activity.startDate|date('Y-m-d') : '' }} à {{ activity.startDate ? activity.startDate|date('H:i') : '' }}</p>
+            </div>
 
-                <div class="m-2 p-2">
-                    <label>Lieu</label>
-                    <label>{{ activity.place.placeName }}</label>
-                </div>
+            <div class="show-left">
+                <label>Date limite d'inscription :&nbsp;</label>
+                <p>{{ activity.endDate ? activity.endDate|date('Y-m-d') : '' }}</p>
+            </div>
 
-                <div class="m-2 p-2">
-                    <label>Rue</label>
-                    <label>{{ activity.place.placeStreet }}</label>
-                </div>
+            <div class="show-left">
+                <label>Nombre de places :&nbsp;</label>
+                <p>{{ activity.maxInscriptions }}</p>
+            </div>
 
-                <div class="m-2 p-2">
-                    <label>Ville</label>
-                    <label>{{ activity.place.city.cityName }}</label>
-                </div>
+            <div class="show-left">
+                <label >Durée :&nbsp;</label>
+                <p>{{ activity.duration }} minutes</p>
+            </div>
 
-                <div class="m-2 p-2">
-                    <label>Code postal</label>
-                    <label>{{ activity.place.city.cityName }}</label>
-                </div>
+            <div class="show">
+                <label>Description et infos :&nbsp;</label>
+                <p>{{ activity.description }}</p>
+            </div>
+        </div>
 
-                <div class="m-2 p-2">
-                    <label>Ville</label>
-                    <label>{{ activity.place.city.zipcode }}</label>
-                </div>
+        <div class="justify-content-center m-2 col-2">
 
-                <div class="m-2 p-2">
-                    <label>Latitude</label>
-                    <label>{{ activity.place.latitude }}</label>
-                </div>
+            <div class="show-right">
+                <label>Lieu :&nbsp;</label>
+                <p>{{ activity.place.placeName }}</p>
+            </div>
 
-                <div class="m-2 p-2">
-                    <label>Longitude</label>
-                    <label>{{ activity.place.longitude }}</label>
-                </div>
+            <div class="show-right">
+                <label>Rue :&nbsp;</label>
+                <p>{{ activity.place.placeStreet }}</p>
+            </div>
 
+            <div class="show-right">
+                <label>Ville :&nbsp;</label>
+                <p>{{ activity.place.city.cityName }}</p>
+            </div>
+
+            <div class="show-right">
+                <label>Code postal :&nbsp;</label>
+                <p>{{ activity.place.city.zipcode }}</p>
+            </div>
+
+            <div class="show-right">
+                <label>Latitude :&nbsp;</label>
+                <p>{{ activity.place.latitude }}</p>
+            </div>
+
+            <div class="show-right">
+                <label>Longitude :&nbsp;</label>
+                <p>{{ activity.place.longitude }}</p>
             </div>
 
         </div>
 
-
-{#        <table class="table">#}
-{#            <tbody>#}
-{#            <tr>#}
-{#                <th>Nom de la sortie</th>#}
-{#                <td>{{ activity.name }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Date et heure de la sortie</th>#}
-{#                <td>{{ activity.startDate ? activity.startDate|date('Y-m-d H:i') : '' }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Date limite d'inscription</th>#}
-{#                <td>{{ activity.endDate ? activity.endDate|date('Y-m-d H:i') : '' }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Nombres de places</th>#}
-{#                <td>{{ activity.maxInscriptions }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Durée</th>#}
-{#                <td>{{ activity.duration }} minutes</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Description et infos</th>#}
-{#                <td>{{ activity.description }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Lieu</th>#}
-{#                <td>{{ activity.place.placeName }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Rue</th>#}
-{#                <td>{{ activity.place.placeStreet }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Ville</th>#}
-{#                <td>{{ activity.place.city.cityName }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Code Postal</th>#}
-{#                <td>{{ activity.place.city.zipcode }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Latitude</th>#}
-{#                <td>{{ activity.place.latitude }}</td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#                <th>Longitude</th>#}
-{#                <td>{{ activity.place.longitude }}</td>#}
-{#            </tr>#}
-{#            </tbody>#}
-{#        </table>#}
     </div>
-
+        {# Partie tableau des participants à l'activité #}
     <div>
-        <div>
-            <h2>Liste des participants inscrits :</h2>
-        </div>
-
-        <div>
-            <table class="table">
-                <thead>
+        <div class="d-flex justify-content-center">
+            <div class="col-4 justify-content-center">
+                <h2>Liste des participants inscrits :</h2>
+                <table class="table">
+                    <thead>
                     <tr>
                         <th>Pseudo</th>
                         <th>Nom</th>
                     </tr>
-                </thead>
-                <tbody>
-                {% for participant in activity.participants %}
+                    </thead>
+                    <tbody>
+                    {% for participant in activity.participants %}
+                        <tr>
+                            <td>{{ participant.user.username }}</td>
+                            <td>
+                                {% if participant.id != app.user.participant.id %}
 
-                    <tr>
-                        <td>{{ participant.user.username }}</td>
+                                    <a href="{{ path('app_participant_show',{'id': participant.id}) }}" >
+                                        {{ participant.firstname }}  {{ participant.firstname|upper }}
+                                    </a>
 
-                        <td>{{ participant.firstname }}  {{ participant.firstname|upper }}</td>
-                    </tr>
-                {%  endfor %}
-                </tbody>
-            </table>
+                                {% else %}
+
+                                    <a href="{{ path('app_participant_edit',{'id': app.user.participant.id}) }}" >
+                                        {{ participant.firstname }}  {{ participant.firstname|upper }}
+                                    </a>
+
+                                {% endif %}
+                            </td>
+
+                        </tr>
+
+                    {%  endfor %}
+
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
+</div>
 
 
 
 {#    <a href="{{ path('app_activity_index') }}">back to list</a>#}
-
 {#    <a href="{{ path('app_activity_edit', {'id': activity.id}) }}">Modifier</a>#}
-
 {#    {{ include('activity/_delete_form.html.twig') }}#}
 {% endblock %}

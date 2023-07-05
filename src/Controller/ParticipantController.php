@@ -57,14 +57,21 @@ class ParticipantController extends AbstractController
     #[Route('/{id}', name: 'app_participant_show', methods: ['GET'])]
     public function show($id,
                          Participant $participant,
-                         UserRepository $userRepository): Response
+                         UserRepository $userRepository,
+                         SiteRepository $siteRepository): Response
     {
 
         $user = $userRepository->findByParticipantId($id);
+
         //dd($user);
+
+
+        $site = $siteRepository->find($participant->getSite());
 
         return $this->render('participant/show.html.twig', [
             'participant' => $participant,
+            'user' => $user[0],
+            'site' => $site
         ]);
     }
 

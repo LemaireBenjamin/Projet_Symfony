@@ -35,11 +35,21 @@ class ActivityController extends AbstractController
     {
         $activities = $activityRepository->findAll();
         $currentUser = $security->getUser();
+        $oneMonthAgo = new \DateTime('-1 month');
 
         $sites = $this->entityManager->getRepository(Site::class)->findAll();
         $form = $this->createForm(ActivityFilterType::class, null, [
             'sites' => $sites,
         ]);
+
+        $filteredActivities = [];
+        foreach ($activities as $activity) {
+            $activityRepository->updateStatusToEnCoursIfToday($activity);
+            if($activity->getStartDate() >= $oneMonthAgo) {
+                $filteredActivities[] = $activity;
+            }
+        }
+        $activities = $filteredActivities;
 
         $form->handleRequest($request);
 
@@ -57,6 +67,7 @@ class ActivityController extends AbstractController
                 $data['isPast'],
                 $currentUser
             );
+
         }
         return $this->render('activity/index.html.twig', [
             'activities' => $activities,
@@ -80,19 +91,21 @@ class ActivityController extends AbstractController
         $cities = $cityRepository->findAll();
         $site = $participant[0]->getSite();
 
-
         $activity->setSite($site);
 
 
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $status = $statusRepository->find(1);
-            $placeId = $form->getData();
-            dd($placeId);
-            $activity->setPlace($placeId);
+            $activityData = $request->get('activity');
+            $placeId = $activityData['placeId'];
+            $place = $placeRepository->find($placeId);
+
+            $activity->setPlace($place);
             $activity->setOrganizer($participant[0]);
             $activity->setStatus($status);
 
@@ -212,5 +225,26 @@ class ActivityController extends AbstractController
     }
 
 
+    #[Route('/{id}/cancel', name: 'app_activity_cancel', methods: ['GET','POST'])]
+    public function cancel( Request $request,
+                            ActivityRepository $activityRepository,
+                            $id
+    ): Response
+    {
+        $activity = $activityRepository->find($id);
+
+        if ($request->isMethod('POST')) {
+
+//            $activity->addParticipant($participant[0]);
+//
+//            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_activity_show', ['id' => $activity->getId()]);
+        }
+
+        return $this->render('activity/cancel_activity.html.twig', [
+            'activity' => $activity,
+        ]);
+    }
 
 }

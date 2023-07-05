@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activity{% endblock %}
+
+{% block body %}
+    <div>
+
+        <h1>Annuler une sortie</h1>
+
+
+        <div class="d-flex justify-content-center">
+            <div class="justify-content-center m-2 col-3">
+
+                <div class="show-left">
+                    <label>Nom de la sortie :&nbsp;</label>
+                    <p>{{ activity.name }}</p>
+                </div>
+
+                <div class="show-left">
+                    <label>Date de la sortie :&nbsp;</label>
+                    <p> {{ activity.startDate ? activity.startDate|date('Y-m-d') : '' }}</p>
+                </div>
+
+                <div class="show-left">
+                    <label>Date limite d'inscription :&nbsp;</label>
+                    <p>{{ activity.endDate ? activity.endDate|date('Y-m-d') : '' }}</p>
+                </div>
+
+                <div class="show-left">
+                    <label>Nombre de places :&nbsp;</label>
+                    <p>{{ activity.maxInscriptions }}</p>
+                </div>
+
+                <div class="show-left">
+                    <label >Durée :&nbsp;</label>
+                    <p>{{ activity.duration }} minutes</p>
+                </div>
+
+                <div class="show">
+                    <label>Description et infos :&nbsp;</label>
+                    <p>{{ activity.description }}</p>
+                </div>
+            </div>
+
+
+    </div>
+{% endblock %}

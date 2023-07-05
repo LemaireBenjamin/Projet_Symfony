@@ -3,6 +3,7 @@
 {% block title %}Participant{% endblock %}
 
 {% block body %}
+
     {% set userFirstname = app.user.participant.firstname %}
 
     <div class="row mt-5">
@@ -49,6 +50,41 @@
             {#    {{ include('participant/_delete_form.html.twig') }}#}
         </div>
         </div>
-    </div>
 
+    <h1>{{ user.username }}</h1>
+
+    <div class="d-block fs-5 text-center m-4">
+
+        <div class="mb-4">
+
+            <div class="m-4 align-items-start">
+                <label class="mb-2">Prénom :</label>
+                <label class="fw-medium">{{ participant.firstname }}</label>
+            </div>
+
+            <div class="mb-4 align-items-start">
+                <label class="mb-2">Nom :</label>
+                <label class="fw-medium">{{ participant.lastname }}</label>
+            </div>
+
+            <div class="mb-4 align-items-start">
+                <label class="mb-2">Téléphone :</label>
+                <label class="fw-medium">{{ participant.phone }}</label>
+            </div>
+
+            <div class="mb-4 align-items-start">
+                <label class="mb-2">Email :</label>
+                <label class="fw-medium">{{ user.email }}</label>
+            </div>
+
+            <div class="mb-4 pe-4 align-items-start ">
+                <label class="mb-2">Site de rattachement :</label>
+                <label class="fw-medium">{{ site.siteName }}</label>
+            </div>
+        </div>
+
+        <a class="btn btn-secondary" href="{{ path('app_activity_index') }}">Retour</a>
+
+    </div>
+    </div>
 {% endblock %}
