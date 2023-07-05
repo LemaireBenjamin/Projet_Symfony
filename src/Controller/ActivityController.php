@@ -35,11 +35,21 @@ class ActivityController extends AbstractController
     {
         $activities = $activityRepository->findAll();
         $currentUser = $security->getUser();
+        $oneMonthAgo = new \DateTime('-1 month');
 
         $sites = $this->entityManager->getRepository(Site::class)->findAll();
         $form = $this->createForm(ActivityFilterType::class, null, [
             'sites' => $sites,
         ]);
+
+        $filteredActivities = [];
+        foreach ($activities as $activity) {
+            $activityRepository->updateStatusToEnCoursIfToday($activity);
+            if($activity->getStartDate() >= $oneMonthAgo) {
+                $filteredActivities[] = $activity;
+            }
+        }
+        $activities = $filteredActivities;
 
         $form->handleRequest($request);
 
@@ -57,6 +67,7 @@ class ActivityController extends AbstractController
                 $data['isPast'],
                 $currentUser
             );
+
         }
         return $this->render('activity/index.html.twig', [
             'activities' => $activities,

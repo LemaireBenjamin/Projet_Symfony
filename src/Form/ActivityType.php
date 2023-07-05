@@ -86,6 +86,9 @@ class ActivityType extends AbstractType
                 'widget' => 'single_text',
                 'data' => new \DateTime(),
                 'by_reference' => true,
+                'attr' => [
+                    'id' => ('form_startDate'),
+                ],
             ])
 
             ->add('duration')
