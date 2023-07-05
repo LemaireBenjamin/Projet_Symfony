@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Activity;
+use App\Entity\Status;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -35,6 +36,17 @@ class ActivityRepository extends ServiceEntityRepository
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+    public function updateStatusToEnCoursIfToday(Activity $activity): void
+    {
+        $today = new \DateTime('today');
+        $startDate = $activity->getStartDate();
+
+        if ($startDate && $startDate->format('Y-m-d') === $today->format('Y-m-d')) {
+            $statusEnCours = $this->getEntityManager()->getRepository(Status::class)->find(4);
+            $activity->setStatus($statusEnCours);
             $this->getEntityManager()->flush();
         }
     }
