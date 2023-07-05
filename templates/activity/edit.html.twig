@@ -1,15 +1,64 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Activity{% endblock %}
+{% block title %}Modifier une activité{% endblock %}
 
 {% block body %}
     <div class="title">
         <h1>Modifier une sortie</h1>
     </div>
+    <div class="container">
+        <div class="left col-5">
+            {{ form_start(form, {'attr': {'id': 'edit_activity_form'}}) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.startDate, {'label' : 'Date et heure de la sortie : '}) }}
+            {{ form_row(form.endDate, {'label' : 'Date limite d\'inscription : '}) }}
+            <div class="d-flex justify-content-lg-between">
+                <div class="row align-items-center g-3">
+                    <div class="col-auto">
+                        {{ form_label(form.maxInscriptions, 'Nombre de places :') }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(form.maxInscriptions, {'attr': {'class': 'form-control', 'style': 'width: 150px;'}}) }}
+                    </div>
+                </div>
+                <div class="row align-items-center g-3">
+                    <div class="col-auto">
+                        {{ form_label(form.duration, 'Durée :') }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(form.duration, {'attr': {'class': 'form-control', 'style': 'width: 100px;'}}) }}
+                    </div>
+                </div>
+            </div>
+            {{ form_row(form.description, {'label' : 'Description et infos : ', 'attr': {'style': 'height: 255px;'}}) }}
+        </div>
+        <div class="right col-4">
+            {{ form_row(form.site, {'label' : 'Campus : ', 'attr': {'readonly': 'readonly'}}) }}
+            {{ form_row(form.cities) }}
+            <div>
+                <div class="placeForm">
+                    <div class="col-10">
+                        {{ form_row(form.places, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <div class="col-2">
+                        <a href=""><img src="{{ asset('assets/img/plus.png') }}" alt="" class="placeForm-img"></a>
+                    </div>
+                </div>
+            </div>
+            {{ form_row(form.placeId) }}
+            {{ form_row(form.placeStreet) }}
+            {{ form_row(form.zipCode, {'attr': {'readonly': 'readonly'}}) }}
+            {{ form_row(form.latitude) }}
+            {{ form_row(form.longitude) }}
+            <div class="submit">
+                {{ form_row(form.submit, {'attr': {'class': 'btn btn-outline-success'}}) }}
+                <a href="{{ path('app_activity_index') }}">Retour aux activités</a>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
 
-    {{ include('activity/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_activity_index') }}">back to list</a>
-
-    {{ include('activity/_delete_form.html.twig') }}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/affichageDonnees.js') }}"></script>
 {% endblock %}

@@ -7,72 +7,60 @@
     <h1>Afficher une sortie</h1>
     <div class="d-flex justify-content-center">
         <div class="justify-content-center m-2 col-3">
-
             <div class="show-left">
                 <label>Nom de la sortie :&nbsp;</label>
                 <p>{{ activity.name }}</p>
             </div>
-
             <div class="show-left">
                 <label>Date et heure de la sortie :&nbsp;</label>
                 <p> {{ activity.startDate ? activity.startDate|date('Y-m-d') : '' }} à {{ activity.startDate ? activity.startDate|date('H:i') : '' }}</p>
             </div>
-
             <div class="show-left">
                 <label>Date limite d'inscription :&nbsp;</label>
                 <p>{{ activity.endDate ? activity.endDate|date('Y-m-d') : '' }}</p>
             </div>
-
             <div class="show-left">
                 <label>Nombre de places :&nbsp;</label>
                 <p>{{ activity.maxInscriptions }}</p>
             </div>
-
             <div class="show-left">
                 <label >Durée :&nbsp;</label>
                 <p>{{ activity.duration }} minutes</p>
             </div>
-
             <div class="show">
                 <label>Description et infos :&nbsp;</label>
                 <p>{{ activity.description }}</p>
             </div>
         </div>
-
         <div class="justify-content-center m-2 col-2">
-
             <div class="show-right">
                 <label>Lieu :&nbsp;</label>
                 <p>{{ activity.place.placeName }}</p>
             </div>
-
             <div class="show-right">
                 <label>Rue :&nbsp;</label>
                 <p>{{ activity.place.placeStreet }}</p>
             </div>
-
             <div class="show-right">
                 <label>Ville :&nbsp;</label>
                 <p>{{ activity.place.city.cityName }}</p>
             </div>
-
             <div class="show-right">
                 <label>Code postal :&nbsp;</label>
                 <p>{{ activity.place.city.zipcode }}</p>
             </div>
-
             <div class="show-right">
                 <label>Latitude :&nbsp;</label>
                 <p>{{ activity.place.latitude }}</p>
             </div>
-
             <div class="show-right">
                 <label>Longitude :&nbsp;</label>
                 <p>{{ activity.place.longitude }}</p>
             </div>
-
         </div>
-
+    </div>
+    <div class="submit">
+        <a href="{{ path('app_activity_index') }}">Retour aux activités</a>
     </div>
         {# Partie tableau des participants à l'activité #}
     <div>
@@ -92,24 +80,17 @@
                             <td>{{ participant.user.username }}</td>
                             <td>
                                 {% if participant.id != app.user.participant.id %}
-
                                     <a href="{{ path('app_participant_show',{'id': participant.id}) }}" >
-                                        {{ participant.firstname }}  {{ participant.firstname|upper }}
+                                        {{ participant.firstname }}  {{ participant.lastname|upper }}
                                     </a>
-
                                 {% else %}
-
                                     <a href="{{ path('app_participant_edit',{'id': app.user.participant.id}) }}" >
-                                        {{ participant.firstname }}  {{ participant.firstname|upper }}
+                                        {{ participant.firstname }}  {{ participant.lastname|upper }}
                                     </a>
-
                                 {% endif %}
                             </td>
-
                         </tr>
-
                     {%  endfor %}
-
                     </tbody>
                 </table>
             </div>

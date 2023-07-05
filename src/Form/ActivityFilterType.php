@@ -22,6 +22,7 @@ class ActivityFilterType extends AbstractType
                 },
                 'required' => false,
                 'label' => 'Site',
+                'placeholder' => 'Choisir un site'
             ])
             ->add('name', TextType::class, [
                 'required' => false,
