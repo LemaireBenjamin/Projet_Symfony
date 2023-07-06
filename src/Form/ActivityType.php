@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
+
 class ActivityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -100,10 +101,6 @@ class ActivityType extends AbstractType
                     'min' => (new \DateTime('+7 days'))->format('d/m/Y'),
                 ],
                 'by_reference' => true,
-
-//                'widget' => 'single_text',
-//                'data' => $defaultEndDate->format('d/m/Y'),
-//                'by_reference' => true,
             ])
             ->add('maxInscriptions')
             ->add('description', TextareaType::class)

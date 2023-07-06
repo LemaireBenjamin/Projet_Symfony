@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 
+
 #[Route('/activity')]
 class ActivityController extends AbstractController
 {
@@ -74,7 +75,14 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/new', name: 'app_activity_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CityRepository $cityRepository, PlaceRepository $placeRepository, ParticipantRepository $participantRepository, StatusRepository $statusRepository, ActivityRepository $activityRepository): Response
+    public function new(
+        Request $request,
+        CityRepository $cityRepository,
+        PlaceRepository $placeRepository,
+        ParticipantRepository $participantRepository,
+        StatusRepository $statusRepository,
+        ActivityRepository $activityRepository,
+        SessionInterface $session): Response
     {
         $activity = new Activity();
 
@@ -83,7 +91,7 @@ class ActivityController extends AbstractController
         $site = $participant[0]->getSite();
 
         $activity->setSite($site);
-
+        $flashMessages = [];
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
 
