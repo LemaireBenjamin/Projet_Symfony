@@ -9,9 +9,6 @@
             <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
             <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
         {% endblock %}
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
     </head>
     <body>
         <header>
@@ -40,5 +37,8 @@
         <footer>
             {{ include('/common/footer.html.twig') }}
         </footer>
+        {% block javascripts %}
+{#            {{ encore_entry_script_tags('app') }}#}
+        {% endblock %}
     </body>
 </html>
