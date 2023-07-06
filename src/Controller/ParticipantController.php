@@ -96,7 +96,6 @@ class ParticipantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             // Récupére les valeurs des inputs du formulaire
             $username = $request->request->get("username");
             $email = $request->request->get("email");
