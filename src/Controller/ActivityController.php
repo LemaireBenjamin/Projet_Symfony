@@ -15,9 +15,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 
 
 #[Route('/activity')]
@@ -78,7 +80,14 @@ class ActivityController extends AbstractController
 
     #[Route('/new', name: 'app_activity_new', methods: ['GET', 'POST'])]
     #[IsGranted("ROLE_USER", message: "Page non trouvée", statusCode: 404)]
-    public function new(Request $request, CityRepository $cityRepository, PlaceRepository $placeRepository, ParticipantRepository $participantRepository, StatusRepository $statusRepository, ActivityRepository $activityRepository): Response
+    public function new(
+        Request $request,
+        CityRepository $cityRepository,
+        PlaceRepository $placeRepository,
+        ParticipantRepository $participantRepository,
+        StatusRepository $statusRepository,
+        ActivityRepository $activityRepository,
+        SessionInterface $session): Response
     {
         $activity = new Activity();
 
@@ -87,7 +96,7 @@ class ActivityController extends AbstractController
         $site = $participant[0]->getSite();
 
         $activity->setSite($site);
-
+        $flashMessages = [];
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
 

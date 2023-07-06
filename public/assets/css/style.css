@@ -2,6 +2,12 @@
     background-image: var(--bs-gradient);.
 }
 
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 74vh;
+}
+
 h1 {
     display: flex;
     justify-content: center;

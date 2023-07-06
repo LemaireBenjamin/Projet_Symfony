@@ -6,6 +6,13 @@
     <h1>Modifier Participant</h1>
     <div class="d-flex justify-content-center">
         <div class="justify-content-center m-2 col-3">
+            {{ form_start(form) }}
+
+            <div class="form-group">
+                <label for="username" class="col-form-label pb-1" >Pseudo </label>
+                <input class="form-control" type="text" id="username" name="username" value="{{ app.user.username }}" />
+            </div>
+
             {{ form_row(form.firstname) }}
 
             {{ form_row(form.lastname) }}
@@ -35,7 +42,7 @@
 
             {{ form_row(form.site) }}
                 <button class="btn btn-primary" type="submit">Enregistrer</button>
-                <a class="btn btn-secondary" href="{{ path('app_main') }}" >Annuler</a>
+                <a class="btn btn-secondary" href="{{ path('app_activity_index') }}" >Annuler</a>
             {{ form_end(form) }}
         </div>
     </div>

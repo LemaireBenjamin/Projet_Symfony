@@ -10,9 +10,17 @@
         <div class="left col-5">
             {{ form_start(form, {'attr': {'id': 'activity_form'}}) }}
             {{ form_row(form.name) }}
-            {{ form_row(form.startDate, {'label' : 'Date et heure de la sortie : '}) }}
-            {{ form_row(form.endDate, {'label' : 'Date limite d\'inscription : '}) }}
-            <div class="d-flex justify-content-lg-between">
+            <label for="startDate" class="form-label required">Date et heure de la sortie : </label>
+            <input type="datetime-local" id="startDate" name="activity[startDate]" required="required" class="datepicker form-control"
+                   value="{{ "now"|date_modify('+1 day')|date('Y-m-d') ~ 'T' ~ "now"|date('H:i') }}"
+                   min="{{ "now"|date_modify('+1 day')|date('Y-m-d\\TH:i') }}"
+                   max="{{ "now"|date_modify('+6 month')|date('Y-m-d\\TH:i') }}">
+
+            <label for="endDate" class="form-label required">Date limite d'inscription : </label>
+            <input type="datetime-local" id="endDate" name="activity[endDate]" required="required" class="datepicker form-control" value="" min="{{ "now"|date('Y-m-d\\TH:i') }}" max="{{ "now"|date_modify('+6 month')|date('Y-m-d\\TH:i') }}">
+{#            {{ form_row(form.startDate, {'label' : 'Date et heure de la sortie : ', 'attr': {'class': 'datepicker'}, 'id': 'startDate'}) }}#}
+{#            {{ form_row(form.endDate, {'label' : 'Date limite d\'inscription : ', 'attr': {'class': 'datepicker'}}) }}#}
+            <div class="d-flex justify-content-lg-between mt-3">
                 <div class="row align-items-center g-3">
                     <div class="col-auto">
                         {{ form_label(form.maxInscriptions, 'Nombre de places :') }}
@@ -57,7 +65,31 @@
             {{ form_end(form) }}
         </div>
     </div>
+    {% block javascripts %}
+        <script>
+            // Récupérer les éléments des champs de date par leur ID
+            let startDateInput = document.getElementById('startDate');
+            let endDateInput = document.getElementById('endDate');
+            console.log(startDateInput);
+            // Ajouter un écouteur d'événements pour détecter les modifications de valeur
+            startDateInput.addEventListener('change', checkEndDate);
+            endDateInput.addEventListener('change', checkEndDate);
+            // Fonction de vérification de la date de fin
+            function checkEndDate() {
+                let startDate = new Date(startDateInput.value);
+                let endDate = new Date(endDateInput.value);
+
+                // Comparer les dates
+                if (endDate < startDate) {
+                    // Date de fin postérieure à la date de début
+                    // Afficher un message d'erreur ou effectuer une action appropriée
+                    console.log("La date de fin ne peut pas être antérieure à la date de début.");
+                    // let message = "La date de clôture ne peut pas être antérieure à la date de sortie.";
+                    // alert(message);
+                }
+            }
+        </script>
+        <script src="{{ asset('assets/js/affichageDonnees.js') }}"></script>
+    {% endblock %}
 {% endblock %}
-{% block javascripts %}
-    <script src="{{ asset('assets/js/affichageDonnees.js') }}"></script>
-{% endblock %}
+

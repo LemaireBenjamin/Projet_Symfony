@@ -25,7 +25,7 @@ class ParticipantType extends AbstractType
         $builder
             ->add('lastname', TextType::class,[
                 'label' => 'Nom',
-                'attr' => ['pattern' => '[a-zA-Z]*']
+//                'attr' => ['pattern' => '[a-zA-Z]*']
             ])
             ->add('firstname', TextType::class,[
                 'label' => 'Prénom'

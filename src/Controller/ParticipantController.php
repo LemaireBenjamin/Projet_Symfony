@@ -10,6 +10,7 @@ use App\Repository\ParticipantRepository;
 use App\Repository\SiteRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use mysql_xdevapi\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -102,6 +103,9 @@ class ParticipantController extends AbstractController
             $password = $request->request->get("password");
 
             try {
+                if($password === ""){
+                    throw new \Exception("Mot de passe requis");
+                }
                 $existingUser = $userRepository->findOneByUsername($username);
 
                 if ($existingUser && $existingUser !== $user) {
