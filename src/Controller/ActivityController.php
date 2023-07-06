@@ -12,7 +12,6 @@ use App\Repository\CityRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\StatusRepository;
-use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\DateTime;
+
 
 #[Route('/activity')]
 class ActivityController extends AbstractController
@@ -37,22 +37,13 @@ class ActivityController extends AbstractController
     public function index(Request $request,ActivityRepository $activityRepository, Security $security): Response
     {
         $activities = $activityRepository->findAll();
-        $currentUser = $security->getUser();
+        $participantId = $security->getUser()->getParticipant()->getId();
         $oneMonthAgo = new \DateTime('-1 month');
 
         $sites = $this->entityManager->getRepository(Site::class)->findAll();
         $form = $this->createForm(ActivityFilterType::class, null, [
             'sites' => $sites,
         ]);
-
-        $filteredActivities = [];
-        foreach ($activities as $activity) {
-            $activityRepository->updateStatusToEnCoursIfToday($activity);
-            if($activity->getStartDate() >= $oneMonthAgo) {
-                $filteredActivities[] = $activity;
-            }
-        }
-        $activities = $filteredActivities;
 
         $form->handleRequest($request);
 
@@ -68,8 +59,17 @@ class ActivityController extends AbstractController
                 $data['isParticipant'],
                 $data['isNotParticipant'],
                 $data['isPast'],
-                $currentUser
+                $participantId
             );
+    dump($activities);
+            $filteredActivities = [];
+            foreach ($activities as $activity) {
+                $activityRepository->updateStatusToEnCoursIfToday($activity);
+                if($activity->getStartDate() >= $oneMonthAgo) {
+                    $filteredActivities[] = $activity;
+                }
+            }
+            $activities = $filteredActivities;
 
         }
         return $this->render('activity/index.html.twig', [
@@ -112,8 +112,6 @@ class ActivityController extends AbstractController
 
         return $this->render('activity/new.html.twig', [
             'activity' => $activity,
-//            'cities' => $cities,
-//            'places' => $places,
             'form' => $form,
         ]);
     }
@@ -190,7 +188,7 @@ class ActivityController extends AbstractController
 
         return $this->render('activity/edit.html.twig', [
             'activity' => $activity,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

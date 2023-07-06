@@ -51,7 +51,7 @@
             {{ form_row(form.latitude) }}
             {{ form_row(form.longitude) }}
             <div class="submit">
-                {{ form_row(form.submit) }}
+                {{ form_row(form.submit, {'attr': {'class': 'btn btn-outline-success'}}) }}
                 <a href="{{ path('app_activity_index') }}">Retour aux activités</a>
             </div>
             {{ form_end(form) }}

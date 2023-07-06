@@ -4,9 +4,41 @@
 
 {% block body %}
     <h1>Modifier Participant</h1>
+    <div class="d-flex justify-content-center">
+        <div class="justify-content-center m-2 col-3">
+            {{ form_row(form.firstname) }}
 
-    {{ include('participant/_form.html.twig') }}
+            {{ form_row(form.lastname) }}
 
+            {{ form_row(form.phone) }}
+            {% if form. phone.vars.errors|length  %}
+                <div class="alert alert-warning">
+                    {{ form_errors(form.phone) }}
+                </div>
+            {% endif %}
+
+
+            <div class="form-group">
+                <label for="email" class="col-form-label pb-1" >Adresse e-mail</label>
+                <input class="form-control" type="email" id="email" name="email" value="{{ app.user.email }}" />
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="col-form-label pb-1" >Mot de passe</label>
+                <input class="form-control" type="password" id="password" name="password" />
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password" class="col-form-label pb-1">Confirmer le mot de passe</label>
+                <input class="form-control" type="password" id="confirm_password" name="confirm_password" />
+            </div>
+
+            {{ form_row(form.site) }}
+                <button class="btn btn-primary" type="submit">Enregistrer</button>
+                <a class="btn btn-secondary" href="{{ path('app_main') }}" >Annuler</a>
+            {{ form_end(form) }}
+        </div>
+    </div>
 
 {#    {{ include('participant/_delete_form.html.twig') }}#}
 {% endblock %}

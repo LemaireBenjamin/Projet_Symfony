@@ -51,7 +51,7 @@ class ActivityRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByFilters($site, $name, $startDate, $endDate, $isOrganizer, $isParticipant, $isNotParticipant, $isPast, $currentUser)
+    public function findByFilters($site, $name, $startDate, $endDate, $isOrganizer, $isParticipant, $isNotParticipant, $isPast, $participantId)
     {
         $queryBuilder = $this->createQueryBuilder('a');
 
@@ -77,23 +77,29 @@ class ActivityRepository extends ServiceEntityRepository
 
         if ($isOrganizer) {
             $queryBuilder->andWhere('a.organizer = :organizer')
-                ->setParameter('organizer', $currentUser);
+                ->setParameter('organizer', $participantId);
         }
 
         if ($isParticipant && !$isNotParticipant) {
             $queryBuilder->innerJoin('a.participants', 'p1')
                 ->andWhere('p1.id = :participantId')
-                ->setParameter('participantId', $currentUser->getId());
+                ->setParameter('participantId', $participantId);
         }
 
         if ($isNotParticipant && !$isParticipant) {
-            $queryBuilder->leftJoin('a.participants', 'p2')
-                ->andWhere($queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->isNull('p2'),
-                    $queryBuilder->expr()->neq('a.id', ':participantId')
-                ))
-                ->setParameter('participantId', $currentUser->getId());
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->notIn(
+                    'a.id',
+                    $this->createQueryBuilder('a2')
+                        ->join('a2.participants', 'p2')
+                        ->andWhere('p2.id = :participantId')
+                        ->select('a2.id')
+                        ->getDQL()
+                )
+            )->setParameter('participantId', $participantId);
         }
+
+
 
         if ($isParticipant && $isNotParticipant) {
             $queryBuilder->leftJoin('a.participants', 'p2')
@@ -101,7 +107,7 @@ class ActivityRepository extends ServiceEntityRepository
                     $queryBuilder->expr()->isNull('p2'),
                     $queryBuilder->expr()->neq('p2.id', ':participantId')
                 ))
-                ->setParameter('participantId', $currentUser->getId());
+                ->setParameter('participantId', $participantId);
         }
 
         if ($isPast) {
@@ -109,10 +115,6 @@ class ActivityRepository extends ServiceEntityRepository
             $queryBuilder->andWhere('a.status IN (:statusIds)')
                 ->setParameter('statusIds', $statusIds);
         }
-//            $queryBuilder->andWhere('a.startDate < :currentDate')
-//                ->setParameter('currentDate', new \DateTime());
-//        }
-
         return $queryBuilder->getQuery()->getResult();
     }
 

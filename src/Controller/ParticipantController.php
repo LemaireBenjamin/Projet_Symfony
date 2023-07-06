@@ -102,7 +102,6 @@ class ParticipantController extends AbstractController
                 if ($existingUser && $existingUser !== $user) {
                     throw new \Exception("Ce nom d'utilisateur est déjà pris.");
                 }
-
                 $user->setUsername($username);
                 $user->setEmail($email);
 

@@ -17,7 +17,6 @@
      </div>
     {% endif %}
 
-
     <div class="form-group">
         <label for="email" class="col-form-label pb-1" >Adresse e-mail</label>
         <input class="form-control" type="email" id="email" name="email" value="{{ app.user.email }}" />
@@ -34,8 +33,6 @@
     </div>
 
     {{ form_row(form.site) }}
-
-
 
     <button class="btn btn-primary" type="submit">Enregistrer</button>
     <a class="btn btn-secondary" href="{{ path('app_main') }}" >Annuler</a>
