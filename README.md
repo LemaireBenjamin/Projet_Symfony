@@ -5,7 +5,7 @@ Bases fondamentales de Php, Symfony
 
 ## Configuration
 - PHP 8.2
-- Symfony 6.3.1
+- Symfony 6.2.12
 - PHPUnit 9.5.26
 
 ## Environnement et outils
