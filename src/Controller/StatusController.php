@@ -9,11 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/status')]
 class StatusController extends AbstractController
 {
     #[Route('/', name: 'app_status_index', methods: ['GET'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function index(StatusRepository $statusRepository): Response
     {
         return $this->render('status/index.html.twig', [
@@ -22,6 +24,7 @@ class StatusController extends AbstractController
     }
 
     #[Route('/new', name: 'app_status_new', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function new(Request $request, StatusRepository $statusRepository): Response
     {
         $status = new Status();
@@ -41,6 +44,7 @@ class StatusController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_status_show', methods: ['GET'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function show(Status $status): Response
     {
         return $this->render('status/show.html.twig', [
@@ -49,6 +53,7 @@ class StatusController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_status_edit', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function edit(Request $request, Status $status, StatusRepository $statusRepository): Response
     {
         $form = $this->createForm(StatusType::class, $status);
@@ -67,6 +72,7 @@ class StatusController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_status_delete', methods: ['POST'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function delete(Request $request, Status $status, StatusRepository $statusRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$status->getId(), $request->request->get('_token'))) {

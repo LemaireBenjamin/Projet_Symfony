@@ -9,11 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/site')]
 class SiteController extends AbstractController
 {
     #[Route('/', name: 'app_site_index', methods: ['GET'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function index(SiteRepository $siteRepository): Response
     {
         return $this->render('site/index.html.twig', [
@@ -22,6 +24,7 @@ class SiteController extends AbstractController
     }
 
     #[Route('/new', name: 'app_site_new', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function new(Request $request, SiteRepository $siteRepository): Response
     {
         $site = new Site();
@@ -41,6 +44,7 @@ class SiteController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_site_show', methods: ['GET'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function show(Site $site): Response
     {
         return $this->render('site/show.html.twig', [
@@ -49,6 +53,7 @@ class SiteController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_site_edit', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function edit(Request $request, Site $site, SiteRepository $siteRepository): Response
     {
         $form = $this->createForm(SiteType::class, $site);
@@ -67,6 +72,7 @@ class SiteController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_site_delete', methods: ['POST'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function delete(Request $request, Site $site, SiteRepository $siteRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$site->getId(), $request->request->get('_token'))) {

@@ -4,6 +4,7 @@
 
 {% block body %}
 <form method="post">
+
     <div class="login-error">
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -14,20 +15,30 @@
             </div>
         {% endif %}
     </div>
+
     <div class="container-md col-2 mt-4">
+
         <h1 class="h3 mb-3 font-weight-normal">Connectez-vous</h1>
+
         <label for="inputUsername" class="mb-2">Identifiant</label>
         <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" placeholder="Ex. johndoe@gmail.com" required autofocus>
+
         <label for="inputPassword" class="mt-2 mb-1">Mot de passe</label>
         <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
         <input type="hidden" name="_csrf_token"
-               value="{{ csrf_token('authenticate') }}">
+               value="{{ csrf_token('authenticate') }}"
+        >
+
         <div class="d-flex justify-content-center checkbox mt-2">
             <pre><input type="checkbox" name="_remember_me"> Se souvenir de moi</pre>
         </div>
+
         <div class="d-flex col align-items-center justify-content-center">
-            <a href="{{ path('app_forgot_password_request') }}" class="text-decoration-none mb-2">Mot de passe oublié?</a>
+            <a href="#" class="text-decoration-none mb-2">Mot de passe oublié?</a>
+            {# {{ path('app_forgot_password_request') }} #}
         </div>
+
         <div class="d-flex col align-items-center justify-content-center">
             <button class="btn btn-lg btn-outline-success" type="submit">Se Connecter</button>
         </div>

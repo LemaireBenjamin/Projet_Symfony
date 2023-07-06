@@ -15,8 +15,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 
 
 #[Route('/activity')]
@@ -30,6 +33,7 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/', name: 'app_activity_index', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_USER", message: "Page non trouvée", statusCode: 404)]
     public function index(Request $request,ActivityRepository $activityRepository, Security $security): Response
     {
         $activities = $activityRepository->findAll();
@@ -57,7 +61,7 @@ class ActivityController extends AbstractController
                 $data['isPast'],
                 $participantId
             );
-    dump($activities);
+
             $filteredActivities = [];
             foreach ($activities as $activity) {
                 $activityRepository->updateStatusToEnCoursIfToday($activity);
@@ -75,6 +79,7 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/new', name: 'app_activity_new', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_USER", message: "Page non trouvée", statusCode: 404)]
     public function new(
         Request $request,
         CityRepository $cityRepository,
@@ -119,6 +124,7 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/get-place-street/{placeId}', name: 'get_place_street', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_USER", message: "Page non trouvée", statusCode: 404)]
     public function getPlaceStreet(PlaceRepository $placeRepository, $placeId): Response
     {
         $place = $placeRepository->find($placeId);
@@ -128,6 +134,7 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/get-zipcode/{cityId}', name: 'get_zipcode', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_USER", message: "Page non trouvée", statusCode: 404)]
     public function getZipCode(Request $request, CityRepository $cityRepository, $cityId): Response
     {
         $city = $cityRepository->find($cityId);
@@ -138,6 +145,7 @@ class ActivityController extends AbstractController
 
 
    #[Route('/{id}', name: 'app_activity_show', methods: ['GET','POST'])]
+   #[IsGranted("ROLE_USER", message: "Page non trouvée", statusCode: 404)]
    public function show(
        Request $request,
        ActivityRepository $activityRepository,
@@ -173,10 +181,13 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_activity_edit', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function edit(Request $request, Activity $activity, ActivityRepository $activityRepository): Response
     {
+
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $activityRepository->save($activity, true);
@@ -191,6 +202,7 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_activity_delete', methods: ['POST'])]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function delete(Request $request, Activity $activity, ActivityRepository $activityRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$activity->getId(), $request->request->get('_token'))) {
@@ -199,7 +211,8 @@ class ActivityController extends AbstractController
         return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/unsubscribe/{id}',name:'app_activity_unsubscribe',methods:['POST'])]
+    #[Route('/unsubscribe/{id}',name:'app_activity_unsubscribe',methods:['POST','GET'])]
+    #[IsGranted("ROLE_USER", message: "Page non trouvée", statusCode: 404)]
     public function toUnsubscribe(Request $request,
                                   ActivityRepository $activityRepository,
                                   ParticipantRepository $participantRepository,
@@ -208,6 +221,7 @@ class ActivityController extends AbstractController
     {
         $activity = $activityRepository->find($id);
         $user = $this->getUser();
+
 
         if ($request->isMethod('POST')) {
 
@@ -220,23 +234,37 @@ class ActivityController extends AbstractController
         return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
     }
 
+
     #[Route('/{id}/cancel', name: 'app_activity_cancel', methods: ['GET','POST'])]
+    #[IsGranted("ROLE_USER", message: "Page non trouvée", statusCode: 404)]
     public function cancel( Request $request,
                             ActivityRepository $activityRepository,
+                            StatusRepository $statusRepository,
                             $id
     ): Response
     {
         $activity = $activityRepository->find($id);
 
+        $user = $activity->getOrganizer()->getUser();
+
+        $currentUser = $this->getUser();
+
+        if($currentUser->getUserIdentifier() != $user->getUserIdentifier()){
+            return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         if ($request->isMethod('POST')) {
 
-//            $activity->addParticipant($participant[0]);
-//
-//            $this->entityManager->flush();
+            $motif = $request->request->get("motif");
+            $status = $statusRepository->find(6);
+
+            $activity->setDescription($motif);
+            $activity->setStatus($status);
+
+            $activityRepository->save($activity, true);
 
             return $this->redirectToRoute('app_activity_show', ['id' => $activity->getId()]);
         }
-
         return $this->render('activity/cancel_activity.html.twig', [
             'activity' => $activity,
         ]);

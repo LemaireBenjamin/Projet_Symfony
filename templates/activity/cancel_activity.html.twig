@@ -7,41 +7,55 @@
 
         <h1>Annuler une sortie</h1>
 
+    <form action="" method="post">
 
         <div class="d-flex justify-content-center">
-            <div class="justify-content-center m-2 col-3">
 
-                <div class="show-left">
-                    <label>Nom de la sortie :&nbsp;</label>
-                    <p>{{ activity.name }}</p>
+                <div class="justify-content-center m-2 col-3">
+
+                    <div class="show-left">
+                        <label>Nom de la sortie :&nbsp;</label>
+                        <p>{{ activity.name }}</p>
+                    </div>
+
+                    <div class="show-left">
+                        <label>Date de la sortie :&nbsp;</label>
+                        <p> {{ activity.startDate ? activity.startDate|date('d/m/Y') : '' }}</p>
+                    </div>
+
+                    <div class="show-left">
+                        <label>Site organisateur :&nbsp;</label>
+                        <p>{{ activity.site.siteName }}</p>
+                    </div>
+
+                    <div class="show-left">
+                        <label>Lieu :&nbsp;</label>
+                        <p>{{ activity.place.placeName }}
+                            {{ activity.place.placeStreet }}
+                            {{ activity.place.city.zipcode }}
+                            {{ activity.place.city.cityName }}
+                        </p>
+                    </div>
+
+                    <div class="show-left">
+                        <label for="motif">Motif :&nbsp;</label>
+                        <textarea cols="35"
+                                  rows="5"
+                                  name="motif"
+                                  id="motif"
+                                  maxlength="500"
+                                  autofocus
+                        >Motif de l'annulation de l'activité</textarea>
+                    </div>
+
+
                 </div>
+        </div>
 
-                <div class="show-left">
-                    <label>Date de la sortie :&nbsp;</label>
-                    <p> {{ activity.startDate ? activity.startDate|date('Y-m-d') : '' }}</p>
-                </div>
+        <div class="text-center mt-4">
+            <button class="btn btn-primary" name="save" type="submit">Enregistrer</button>
+            <a class="btn btn-secondary" href="{{ path('app_activity_index') }}">Annuler</a>
+        </div>
 
-                <div class="show-left">
-                    <label>Date limite d'inscription :&nbsp;</label>
-                    <p>{{ activity.endDate ? activity.endDate|date('Y-m-d') : '' }}</p>
-                </div>
-
-                <div class="show-left">
-                    <label>Nombre de places :&nbsp;</label>
-                    <p>{{ activity.maxInscriptions }}</p>
-                </div>
-
-                <div class="show-left">
-                    <label >Durée :&nbsp;</label>
-                    <p>{{ activity.duration }} minutes</p>
-                </div>
-
-                <div class="show">
-                    <label>Description et infos :&nbsp;</label>
-                    <p>{{ activity.description }}</p>
-                </div>
-            </div>
-
-
-    </div>
+    </form>
 {% endblock %}
