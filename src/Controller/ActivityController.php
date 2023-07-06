@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Activity;
 use App\Entity\Site;
-use App\Entity\Status;
 use App\Form\ActivityFilterType;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
@@ -19,7 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 
 #[Route('/activity')]
@@ -61,7 +59,7 @@ class ActivityController extends AbstractController
                 $data['isPast'],
                 $participantId
             );
-    dump($activities);
+
             $filteredActivities = [];
             foreach ($activities as $activity) {
                 $activityRepository->updateStatusToEnCoursIfToday($activity);
@@ -174,11 +172,13 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_activity_edit', methods: ['GET', 'POST'])]
-    #[IsGranted("ROLE_USER", message: "Page non trouvée", statusCode: 404)]
+    #[IsGranted("ROLE_ADMIN", message: "Page non trouvée", statusCode: 404)]
     public function edit(Request $request, Activity $activity, ActivityRepository $activityRepository): Response
     {
+
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $activityRepository->save($activity, true);
@@ -202,7 +202,7 @@ class ActivityController extends AbstractController
         return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/unsubscribe/{id}',name:'app_activity_unsubscribe',methods:['POST'])]
+    #[Route('/unsubscribe/{id}',name:'app_activity_unsubscribe',methods:['POST','GET'])]
     #[IsGranted("ROLE_USER", message: "Page non trouvée", statusCode: 404)]
     public function toUnsubscribe(Request $request,
                                   ActivityRepository $activityRepository,
@@ -212,6 +212,7 @@ class ActivityController extends AbstractController
     {
         $activity = $activityRepository->find($id);
         $user = $this->getUser();
+
 
         if ($request->isMethod('POST')) {
 
@@ -224,6 +225,7 @@ class ActivityController extends AbstractController
         return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
     }
 
+
     #[Route('/{id}/cancel', name: 'app_activity_cancel', methods: ['GET','POST'])]
     #[IsGranted("ROLE_USER", message: "Page non trouvée", statusCode: 404)]
     public function cancel( Request $request,
@@ -233,6 +235,14 @@ class ActivityController extends AbstractController
     ): Response
     {
         $activity = $activityRepository->find($id);
+
+        $user = $activity->getOrganizer()->getUser();
+
+        $currentUser = $this->getUser();
+
+        if($currentUser->getUserIdentifier() != $user->getUserIdentifier()){
+            return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
+        }
 
         if ($request->isMethod('POST')) {
 

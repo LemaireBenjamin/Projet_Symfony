@@ -86,6 +86,12 @@ class ParticipantController extends AbstractController
         $findUser = $userRepository->findByParticipantId($id);
         $user = $findUser[0];
 
+        $currentUser = $this->getUser();
+
+        if($currentUser->getUserIdentifier() != $user->getUserIdentifier()){
+            return $this->redirectToRoute('app_activity_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
 
