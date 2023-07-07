@@ -82,27 +82,27 @@ class ActivityType extends AbstractType
                 'label' => 'Longitude :'
             ])
 
-//            ->add('startDate', DateTimeType::class, [
-//                'label' => 'Date de la sortie :',
-//                'widget' => 'single_text',
-//                'data' => new \DateTime(),
-////                'html5'=> false,
-//                'by_reference' => true,
-//                'attr' => [
-//                    'id' => ('form_startDate'),
-//                ],
-//            ])
+            ->add('startDate', DateTimeType::class, [
+                'label' => 'Date de la sortie :',
+                'widget' => 'single_text',
+                'data' => new \DateTime(),
+//                'html5'=> false,
+                'by_reference' => true,
+                'attr' => [
+                    'id' => ('form_startDate'),
+                ],
+            ])
 
             ->add('duration')
-//            ->add('endDate', DateTimeType::class, [
-//                'widget' => 'single_text',
-//                'html5' => true,
-//                'data' => new \DateTime('+7 days'),
-//                'attr' => [
-//                    'min' => (new \DateTime('+7 days'))->format('d/m/Y'),
-//                ],
-//                'by_reference' => true,
-//            ])
+            ->add('endDate', DateTimeType::class, [
+                'widget' => 'single_text',
+                'html5' => true,
+                'data' => new \DateTime('+7 days'),
+                'attr' => [
+                    'min' => (new \DateTime('+7 days'))->format('d/m/Y'),
+                ],
+                'by_reference' => true,
+            ])
             ->add('maxInscriptions')
             ->add('description', TextareaType::class)
 //            ->add('pictureUrl', FileType::class, [

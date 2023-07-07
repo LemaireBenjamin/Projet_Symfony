@@ -16,8 +16,7 @@ INSERT INTO `city` (`id`, `city_no`, `city_name`, `zipcode`)
 VALUES (1, 1, 'Nantes', '44000'),
        (2, 2, 'Quimper', '29000'),
        (3, 3, 'Rennes', '35000'),
-       (4, 4, 'Niort', '79000'),
-       (5, 5, 'Concarneau', '29900');
+       (4, 4, 'Niort', '79000');
 
 INSERT INTO `participant` (`id`, `lastname`, `firstname`, `phone`, `organiser`, `active`)
 VALUES (1, 'MEUNIER', 'Bertrand', '0664826290', 1, 1),

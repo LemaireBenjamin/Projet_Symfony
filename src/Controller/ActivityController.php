@@ -96,10 +96,8 @@ class ActivityController extends AbstractController
         $site = $participant[0]->getSite();
 
         $activity->setSite($site);
-        $flashMessages = [];
         $form = $this->createForm(ActivityType::class, $activity);
         $form->handleRequest($request);
-
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -107,7 +105,6 @@ class ActivityController extends AbstractController
             $activityData = $request->get('activity');
             $placeId = $activityData['placeId'];
             $place = $placeRepository->find($placeId);
-
             $activity->setPlace($place);
             $activity->setOrganizer($participant[0]);
             $activity->setStatus($status);

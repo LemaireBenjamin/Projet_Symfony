@@ -99,8 +99,6 @@ class ActivityRepository extends ServiceEntityRepository
             )->setParameter('participantId', $participantId);
         }
 
-
-
         if ($isParticipant && $isNotParticipant) {
             $queryBuilder->leftJoin('a.participants', 'p2')
                 ->andWhere($queryBuilder->expr()->orX(
